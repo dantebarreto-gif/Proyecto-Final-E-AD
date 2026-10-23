@@ -1,0 +1,12 @@
+Estructura,Operación,Pendiente,Esperado
+LinkedQueue,enqueue+dequeue,1.08,O(n)
+MergeSort,sort,1.19,O(n log n)
+BinaryHeap,push+pop,1.21,O(n log n)
+HashTable,put+get,1.12,O(n)
+LRUCache,get/put,0.91,O(n)
+BPlusTree,bulk_load,0.68,O(n) / O(n log n)
+BPlusTree,insert,1.28,O(n) / O(n log n)
+KDTree,knn10(100 consultas),0.18,O(log n) vs O(n)
+KNN fuerza bruta,knn10(100 consultas),0.84,O(log n) vs O(n)
+BPlusTree,search (por consulta),0.45,O(log_B n) ≈ 0
+BloomFilter,insert+query (vect.),1.05,O(n·k)
