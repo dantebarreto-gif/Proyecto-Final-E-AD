@@ -92,15 +92,15 @@ Cada flecha de la Figura 1 corresponde a un dato que la etapa siguiente consume:
 
 | Estructura (n = 10M) | Tiempo total | Por operación | Pendiente | Observación |
 |---|---|---|---|---|
-| Cola FIFO (enqueue + dequeue) | 13,7 s | 0,69 µs | 1,08 | Lineal, como se espera de O(1) por operación |
-| Merge sort | 111 s | 11,1 µs | 1,19 | El factor log n eleva la pendiente sobre 1 |
-| Heap binario (push + pop) | 181 s | 9,1 µs | 1,21 | Igual: O(n log n) en total |
-| Tabla hash (put + get) | 47,9 s | 2,4 µs | 1,12 | 2,11 sondeos por operación con carga ≤ 0,7; 402 MB de pico |
-| Caché LRU | 11,2 s | 1,1 µs | 0,91 | 91,5 % de aciertos con accesos Zipf |
-| B+Tree: carga masiva / búsqueda | 2,0 s / 44 µs | | 0,68 / 0,45 | Altura 3, 43.862 páginas, 171 MB en disco |
-| KD-Tree: KNN (k = 10) | 0,73 ms por consulta | | 0,18 | **537 veces** más rápido que fuerza bruta (393 ms) |
+| Cola FIFO (enqueue + dequeue) | 13,7 s | 0,69 µs | 1,12 | Lineal, como se espera de O(1) por operación |
+| Merge sort | 111 s | 11,1 µs | 1,21 | El factor log n eleva la pendiente sobre 1 |
+| Heap binario (push + pop) | 181 s | 9,1 µs | 1,22 | Igual: O(n log n) en total |
+| Tabla hash (put + get) | 47,9 s | 2,4 µs | 1,08 | 2,11 sondeos por operación con carga ≤ 0,7; 402 MB de pico |
+| Caché LRU | 11,2 s | 1,1 µs | 0,94 | 91,5 % de aciertos con accesos Zipf |
+| B+Tree: carga masiva / búsqueda | 2,0 s / 44 µs | | 0,89 / 0,32 | Altura 3, 43.862 páginas, 171 MB en disco |
+| KD-Tree: KNN (k = 10) | 0,73 ms por consulta | | 0,11 | **537 veces** más rápido que fuerza bruta (393 ms) |
 
-La búsqueda en el B+Tree crece de 26 µs a 44 µs entre 1M y 10M porque la altura pasa de 2 a 3 páginas; la inserción una a una (44 µs, pendiente 1,28) se midió hasta 1M y se omitió en 10M por tiempo (unos 7 minutos adicionales sin información nueva), porque el pipeline usa carga masiva para el índice de precio.
+La búsqueda en el B+Tree crece de 26 µs a 44 µs entre 1M y 10M porque la altura pasa de 2 a 3 páginas; la inserción una a una (44 µs, pendiente 1,36) se midió hasta 1M y se omitió en 10M por tiempo (unos 7 minutos adicionales sin información nueva), porque el pipeline usa carga masiva para el índice de precio.
 
 ### 6.2 Filtrado probabilístico (S6)
 
@@ -116,17 +116,17 @@ Con 10M actualizaciones sobre 1M claves, el CMS con ε = 0,001 usa **53 KB frent
 
 <figure><img src="figures/fig_minhash.png" alt="MinHash LSH frente a fuerza bruta"><figcaption>Figura 5. MinHash + LSH frente a Jaccard exacto por fuerza bruta: tiempo por consulta, construcción y recall según el número de bandas.</figcaption></figure>
 
-La consulta LSH se mantiene en **0,6 a 0,8 ms** de 1K a 1M conjuntos (pendiente {{MH_SLOPE}}), mientras la fuerza bruta crece linealmente hasta 225 ms: **295 veces** más rápido en 1M, con recall@10 de 1,0 sobre los vecinos con J ≥ 0,5. Con 16 bandas (umbral 0,71) el recall cae a 0,32; con 64 bandas (umbral 0,13) se mantiene pero los candidatos por consulta pasan de 1,4 a 3,2, lo que confirma la curva en S. El costo está en la construcción (98 s para 1M) y la memoria de las firmas (1,5 GB = 128 × 12 B × 1M); por eso se omitió 10M (15 GB). En el pipeline las firmas se calculan solo para los 200K productos.
+La consulta LSH se mantiene en **0,6 a 0,8 ms** de 1K a 1M conjuntos (pendiente 0,05, frente a 1,00 de la fuerza bruta), mientras la fuerza bruta crece linealmente hasta 225 ms: **295 veces** más rápido en 1M, con recall@10 de 1,0 sobre los vecinos con J ≥ 0,5. Con 16 bandas (umbral 0,71) el recall cae a 0,32; con 64 bandas (umbral 0,13) se mantiene pero los candidatos por consulta pasan de 1,4 a 3,2, lo que confirma la curva en S. El costo está en la construcción (98 s para 1M) y la memoria de las firmas (1,5 GB = 128 × 12 B × 1M); por eso se omitió 10M (15 GB). En el pipeline las firmas se calculan solo para los 200K productos.
 
 <figure><img src="figures/fig_ann.png" alt="IVF y HNSW frente a KNN exacto"><figcaption>Figura 6. ANN en d = 32: IVF y HNSW frente a KNN exacto y al KD-Tree; recall@10 y compromiso recall/latencia.</figcaption></figure>
 
-{{ANN}}
+Con 10M vectores de 32 dimensiones, el IVF (4.096 celdas, nprobe = 8) responde en **0,46 ms frente a 104 ms** del KNN exacto (226 veces) con recall@10 de 0,95; con nprobe = 16 sube a 0,98 a la mitad de velocidad. En 1M el barrido de nprobe de 1 a 32 recorre la curva de recall de 0,23 a 0,99, que es el parámetro que el sistema ajusta según la latencia permitida. El costo es la construcción (k-means: 145 s en 10M). HNSW en Python puro llegó a recall 0,97 en 10K pero a 0,80 en 100K con ef = 50 a 100, y su construcción tardó 316 s en 100K, por lo que se limitó a 100K y el pipeline usa IVF; sin aproximación, el KD-Tree en d = 32 fue 420 veces más lento que fuerza bruta en 100K, porque en alta dimensión casi no poda ramas.
 
 ### 6.4 Grafo (S8)
 
 <figure><img src="figures/fig_graph.png" alt="PageRank y comunidades"><figcaption>Figura 7. PageRank frente al grado ponderado, y Louvain frente a Label Propagation en grafos con comunidades plantadas.</figcaption></figure>
 
-PageRank escala linealmente en aristas (pendiente {{PR_SLOPE}}) y converge en 47 a 56 iteraciones: 20,7 s para 9,9M aristas. Su correlación de Spearman con el grado ponderado es 0,99 y el top-100 coincide en 97 %, así que en co-compra la diferencia está en la cola: PageRank sube productos conectados con productos centrales. {{COM}}
+PageRank escala linealmente en aristas (pendiente 1,08) y converge en 47 a 56 iteraciones: 20,7 s para 9,9M aristas. Su correlación de Spearman con el grado ponderado es 0,99 y el top-100 coincide en 97 %, así que en co-compra la diferencia está en la cola: PageRank sube productos conectados con productos centrales. En comunidades, sobre grafos con particiones plantadas, Louvain obtiene mayor modularidad que Label Propagation en todos los tamaños (0,781 frente a 0,750 con 1M aristas, igual a la partición plantada), es más estable entre semillas (NMI 0,99 frente a 0,94) y recupera mejor la partición real (NMI 0,96 frente a 0,93), aunque tarda 25 s frente a 19 s. Con 10M aristas solo corrió LPA (448 s): se fragmentó en 104.606 comunidades con Q = 0,68, mientras Louvain en Python puro superó los 40 minutos y se acotó a 1M aristas. En el grafo real de co-compra del pipeline, Louvain logró Q = 0,916 (1.239 comunidades) frente a 0,894 de LPA (3.359).
 
 ### 6.5 Pipeline completo con 10M eventos
 
@@ -152,7 +152,7 @@ Total: 1.381 s (7.402 eventos/s) con 2,2 GB de memoria residente. Se eliminaron 
 
 ## Referencias
 
-<div class="refs">
+<div class="refs" markdown="1">
 
 Bloom, B. H. (1970). Space/time trade-offs in hash coding with allowable errors. *Communications of the ACM*, 13(7), 422–426. https://doi.org/10.1145/362686.362692
 

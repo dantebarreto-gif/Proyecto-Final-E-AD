@@ -16,8 +16,8 @@ CSS = """
 @page { size: A4; margin: 15mm 15mm 15mm 15mm; }
 body { font-family: 'DejaVu Sans', Arial, sans-serif; font-size: 9pt; line-height: 1.32; color: #111; }
 h1 { font-size: 15pt; margin: 0 0 2pt 0; }
-h2 { font-size: 11.5pt; margin: 9pt 0 3pt 0; border-bottom: 1px solid #bbb; padding-bottom: 1pt; }
-h3 { font-size: 10pt; margin: 6pt 0 2pt 0; }
+h2 { break-after: avoid; font-size: 11.5pt; margin: 9pt 0 3pt 0; border-bottom: 1px solid #bbb; padding-bottom: 1pt; }
+h3 { break-after: avoid; font-size: 10pt; margin: 6pt 0 2pt 0; }
 p { margin: 2pt 0 4pt 0; text-align: justify; }
 ul, ol { margin: 2pt 0 4pt 0; padding-left: 15pt; }
 li { margin: 0 0 1pt 0; }

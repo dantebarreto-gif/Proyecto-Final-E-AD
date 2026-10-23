@@ -43,6 +43,10 @@ python bench/plots.py                      # figuras log-log en report/figures/
 
 # 5. Informe PDF (Markdown -> HTML -> PDF con Chrome/Chromium)
 python scripts/build_report.py --group GrupoEDA
+
+# 6. Diapositivas (Node.js): lee las cifras de results/
+npm install pptxgenjs react react-dom react-icons sharp
+node scripts/build_slides.js
 ```
 
 ### Usar el dataset real REES46
@@ -91,7 +95,7 @@ Experimentos de 1K a 10M (detalle y figuras en el informe):
 | Bloom frente a tabla hash exacta (10M) | 12 MB frente a 268 MB; FP medido 1,01 % con p = 1 % |
 | Count-Min frente a conteo exacto (10M) | 53 KB frente a 16,8 MB; error siempre bajo ε·N |
 | MinHash + LSH frente a Jaccard exacto (1M conjuntos) | 0,76 ms frente a 225 ms (295x), recall@10 = 1,0 |
-{{ANN_README}}
+| IVF frente a KNN exacto (10M vectores, d = 32) | 0,46 ms frente a 104 ms (226x), recall@10 = 0,95 |
 
 Las pendientes log-log medidas están en [`results/bench/slopes.csv`](results/bench/slopes.csv).
 

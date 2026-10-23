@@ -53,7 +53,7 @@ const lru10 = find(base, (r) => r.structure === "LRUCache" && r.n === 1e7);
 const mhRow = find(mh, (r) => r.n === 1e6 && r.bands === 32).n ? find(mh, (r) => r.n === 1e6 && r.bands === 32)
   : find(mh, (r) => r.n === 1e5 && r.bands === 32);
 const annIvf = ann.filter((r) => r.method === "IVF").sort((a, b) => b.n - a.n || a.nprobe - b.nprobe);
-const ivfTop = annIvf.find((r) => r.nprobe === 16) || annIvf[0] || {};
+const ivfTop = annIvf.find((r) => r.nprobe === 8) || annIvf[0] || {};
 const annExact = find(ann, (r) => r.method === "Fuerza bruta (exacto)" && r.n === ivfTop.n);
 const hnsw = find(ann, (r) => r.method === "HNSW");
 const prBig = pr.filter((r) => r.method === "PageRank").sort((a, b) => b.edges - a.edges)[0] || {};
@@ -308,12 +308,12 @@ async function main() {
     { text: "32 dimensiones de la matriz usuario × producto; k-means en celdas y búsqueda solo en las nprobe más cercanas. HNSW implementado como referencia.", options: { color: C.text2 } },
   ], { x: 1.45, y: 1.5, w: 5.6, h: 2.8, fontSize: 15, margin: 0, isTextBox: true, valign: "top", paraSpaceAfter: 12 });
   if (mhRow.n) {
-    statBlock(s, 0.6, 4.4, 3.1, `${fmt(mhRow.speedup, 0)}x`, `LSH frente a fuerza bruta (${fmt(mhRow.n)} conjuntos)`, C.accent4);
-    statBlock(s, 3.9, 4.4, 3.1, fmt(mhRow.recall_at10_J05, 2), "recall@10 de vecinos con Jaccard ≥ 0,5", C.accent4);
+    statBlock(s, 0.6, 4.2, 3.1, `${fmt(mhRow.speedup, 0)}x`, `LSH frente a fuerza bruta con ${fmt(mhRow.n / 1e6)}M conjuntos`, C.accent4);
+    statBlock(s, 3.9, 4.2, 3.1, fmt(mhRow.recall_at10_J05, 2), "recall@10 de vecinos con Jaccard ≥ 0,5", C.accent4);
   }
   if (ivfTop.n) {
-    statBlock(s, 0.6, 5.75, 3.1, `${fmt(annExact.query_ms / ivfTop.query_ms, 0)}x`, `IVF (nprobe ${ivfTop.nprobe}) frente a exacto, n = ${fmt(ivfTop.n)}`, C.text1);
-    statBlock(s, 3.9, 5.75, 3.1, fmt(ivfTop.recall_at10, 2), "recall@10 del IVF", C.text1);
+    statBlock(s, 0.6, 5.5, 3.1, `${fmt(annExact.query_ms / ivfTop.query_ms, 0)}x`, `IVF frente a exacto con ${fmt(ivfTop.n / 1e6)}M vectores`, C.text1);
+    statBlock(s, 3.9, 5.5, 3.1, fmt(ivfTop.recall_at10, 2), "recall@10 del IVF", C.text1);
   }
   const mhRows = mh.filter((r) => r.bands === 32).sort((a, b) => a.n - b.n);
   if (mhRows.length) {
@@ -339,11 +339,11 @@ async function main() {
     { text: "Louvain frente a Label Propagation: ", options: { bold: true, color: C.text1 } },
     { text: "Louvain maximiza la modularidad; LPA es casi lineal pero sin función objetivo y menos estable entre semillas.", options: { color: C.text2 } },
   ], { x: 1.45, y: 1.5, w: 5.6, h: 2.8, fontSize: 15, margin: 0, isTextBox: true, valign: "top", paraSpaceAfter: 12 });
-  statBlock(s, 0.6, 4.4, 3.1, fmt(S.S8.nodes_with_edges), `productos y ${fmt(S.S8.edges)} aristas en la corrida de 10M`, C.accent5);
-  statBlock(s, 3.9, 4.4, 3.1, `${fmt(S.S8.pagerank_s, 2)} s`, `PageRank, ${S.S8.pagerank_iters} iteraciones`, C.accent5);
+  statBlock(s, 0.6, 4.2, 3.1, fmt(S.S8.nodes_with_edges), `productos y ${fmt(S.S8.edges)} aristas en la corrida de 10M`, C.accent5);
+  statBlock(s, 3.9, 4.2, 3.1, `${fmt(S.S8.pagerank_s, 2)} s`, `PageRank, ${S.S8.pagerank_iters} iteraciones`, C.accent5);
   if (prBig.edges) {
-    statBlock(s, 0.6, 5.75, 3.1, `${fmt(prBig.pagerank_s ?? prBig.time_s, 1)} s`, `PageRank con ${fmt(prBig.edges / 1e6, 1)}M aristas`, C.text1);
-    statBlock(s, 3.9, 5.75, 3.1, fmt(prBig.spearman_vs_degree, 2), "correlación de Spearman con el grado", C.text1);
+    statBlock(s, 0.6, 5.5, 3.1, `${fmt(prBig.pagerank_s ?? prBig.time_s, 1)} s`, `PageRank con ${fmt(prBig.edges / 1e6, 1)}M aristas`, C.text1);
+    statBlock(s, 3.9, 5.5, 3.1, fmt(prBig.spearman_vs_degree, 2), "correlación de Spearman con el grado", C.text1);
   }
   const comRows = [["Pipeline 10M", S.S8.louvain_Q, S.S8.lpa_Q]];
   if (louBig.edges) comRows.push([`Grafo plantado ${fmt(louBig.edges / 1e6, 1)}M aristas`, louBig.modularity, lpaSame.modularity]);
