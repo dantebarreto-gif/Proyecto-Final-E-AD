@@ -72,7 +72,30 @@ El orquestador está en [`src/eda/pipeline/`](src/eda/pipeline). S6 corre justo 
 
 ## Resultados principales
 
-{{RESULTADOS_README}}
+Corrida de punta a punta con **10.222.591 eventos** sintéticos con el esquema de REES46 (4 vCPU, Python 3.13), resumen en [`results/demo/summary_10M.json`](results/demo/summary_10M.json):
+
+| Métrica | Valor |
+|---|---|
+| Tiempo total | 1.381 s (7.402 eventos/s) |
+| Duplicados eliminados (S1) | 151.072 de 151.072 inyectados |
+| Fraude (S6) | 64.923 bloqueados, precisión 99,998 %, recall 90,8 %; Bloom de 3,4 KB |
+| B+Tree en disco (S4) | 254.328 órdenes, altura 3 |
+| Grafo de co-compra (S8) | 58.820 productos, 258.638 aristas; Louvain Q = 0,916 frente a LPA Q = 0,894 |
+
+Experimentos de 1K a 10M (detalle y figuras en el informe):
+
+| Comparación | Resultado |
+|---|---|
+| KD-Tree frente a KNN por fuerza bruta (10M puntos) | 0,73 ms frente a 393 ms por consulta (537x) |
+| B+Tree, búsqueda con 10M claves | 44 µs, 3 páginas leídas |
+| Bloom frente a tabla hash exacta (10M) | 12 MB frente a 268 MB; FP medido 1,01 % con p = 1 % |
+| Count-Min frente a conteo exacto (10M) | 53 KB frente a 16,8 MB; error siempre bajo ε·N |
+| MinHash + LSH frente a Jaccard exacto (1M conjuntos) | 0,76 ms frente a 225 ms (295x), recall@10 = 1,0 |
+{{ANN_README}}
+
+Las pendientes log-log medidas están en [`results/bench/slopes.csv`](results/bench/slopes.csv).
+
+**Sobre los datos.** El entorno donde se ejecutaron las corridas no tenía acceso a Kaggle, por eso se usó el generador con el mismo esquema. Con los CSV de REES46 en `data/raw/` todos los comandos funcionan igual con `--source rees46`.
 
 ## Roles y contribución
 

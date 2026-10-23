@@ -34,7 +34,10 @@ def main() -> None:
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--only", nargs="*", choices=list(EXPERIMENTS))
     ap.add_argument("--sizes", nargs="*", type=int)
+    ap.add_argument("--louvain-max-edges", type=int, default=1_000_000,
+                    help="Louvain en Python puro supera los 40 min con 10M aristas; por encima solo corre LPA")
     a = ap.parse_args()
+    bench_graph.LOUVAIN_MAX_EDGES = a.louvain_max_edges
     sizes = a.sizes or (QUICK_SIZES if a.quick else SIZES)
     save_platform()
     for name in a.only or EXPERIMENTS:

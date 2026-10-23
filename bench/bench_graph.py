@@ -67,7 +67,11 @@ def run_pagerank(sizes) -> None:
         print(f"[E6] m={m:,} PageRank {m_pr:.3f}s, {iters} iteraciones")
 
 
-def run_communities(sizes, max_louvain_edges: int = 10_000_000) -> None:
+LOUVAIN_MAX_EDGES = 1_000_000
+
+
+def run_communities(sizes, max_louvain_edges: int = None) -> None:
+    max_louvain_edges = max_louvain_edges or LOUVAIN_MAX_EDGES
     rec = Recorder("communities")
     rng = np.random.default_rng(SEED + 5)
     for m in sizes:
@@ -75,6 +79,7 @@ def run_communities(sizes, max_louvain_edges: int = 10_000_000) -> None:
         seeds = range(5) if m <= 1_000_000 else range(1)
         for name, fn in (("Louvain", louvain), ("Label Propagation", label_propagation)):
             if name == "Louvain" and m > max_louvain_edges:
+                print(f"[E7] m={m:,} Louvain omitido: supera {max_louvain_edges:,} aristas en Python puro")
                 continue
             labels, times = [], []
             for sd in seeds:

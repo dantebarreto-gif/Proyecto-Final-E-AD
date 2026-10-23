@@ -1,8 +1,8 @@
 {
   "eventos_recibidos": 10222591,
   "eventos_que_pasan_el_filtro": 10006596,
-  "segundos": 1492.47,
-  "eventos_por_segundo": 6849,
+  "segundos": 1380.97,
+  "eventos_por_segundo": 7402,
   "S1": {
     "invalidos": 0,
     "duplicados_eliminados": 151072,
@@ -43,11 +43,11 @@
     "nodes_with_edges": 58820,
     "edges": 258638,
     "pagerank_iters": 74,
-    "pagerank_s": 0.4689901739998277,
-    "louvain_s": 1.7673911490001046,
+    "pagerank_s": 0.6158103519992437,
+    "louvain_s": 2.1228102329996545,
     "louvain_Q": 0.9159482131045363,
     "louvain_k": 1239,
-    "lpa_s": 1.696162343999731,
+    "lpa_s": 1.7116495509999368,
     "lpa_Q": 0.8939445811013635,
     "lpa_k": 3359,
     "top20_overlap_pagerank_vs_degree": 0.95,
@@ -60,21 +60,21 @@
     ]
   },
   "tiempos_por_etapa_s": {
-    "setup": 2.304,
-    "S0 ingesta": 248.773,
-    "S1 preprocesamiento": 67.329,
-    "S2 prioridad": 81.609,
-    "S3 almacenamiento": 28.401,
-    "S6 filtrado": 90.973,
-    "S3 interacciones": 54.894,
-    "S4 B+Tree": 4.784,
-    "S5 KD-Tree": 0.432,
-    "S7 similitud": 1.473,
-    "S8 grafo": 1.898,
-    "S9 servicio": 5.88,
-    "S5 refresco KD-Tree": 4.445,
-    "S7 refresco LSH+IVF": 873.148,
-    "S8 refresco PageRank+Louvain": 20.548
+    "setup": 4.329,
+    "S0 ingesta": 244.45,
+    "S1 preprocesamiento": 63.709,
+    "S2 prioridad": 78.127,
+    "S3 almacenamiento": 28.091,
+    "S6 filtrado": 86.849,
+    "S3 interacciones": 53.135,
+    "S4 B+Tree": 4.763,
+    "S5 KD-Tree": 0.384,
+    "S7 similitud": 0.199,
+    "S8 grafo": 1.86,
+    "S9 servicio": 5.701,
+    "S5 refresco KD-Tree": 4.04,
+    "S7 refresco LSH+IVF": 781.098,
+    "S8 refresco PageRank+Louvain": 20.766
   },
   "top_ventas": [
     {
@@ -495,7 +495,7 @@
       "[S6] pasa el filtro (Bloom: ausente; CMS bajo el umbral)",
       "[S4] orden indexada por tiempo en el B+Tree",
       "[S5] vecinos por atributos (KD-Tree): [108810, 11894, 67409]",
-      "[S7] relacionados LSH: [0, 1, 6]; vecinos IVF: [180133, 171512, 125502]",
+      "[S7] relacionados LSH: []; vecinos IVF: [180133, 171512, 125502]",
       "[S8] co-compra con [143273, 99174, 32717] en la misma orden"
     ],
     "producto": {
