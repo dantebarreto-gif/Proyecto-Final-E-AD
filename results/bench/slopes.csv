@@ -1,0 +1,20 @@
+Estructura,Operación,Pendiente,Esperado
+LinkedQueue,enqueue+dequeue,1.12,O(n)
+MergeSort,sort,1.21,O(n log n)
+BinaryHeap,push+pop,1.22,O(n log n)
+HashTable,put+get,1.08,O(n)
+LRUCache,get/put,0.94,O(n)
+BPlusTree,bulk_load,0.89,O(n) / O(n log n)
+BPlusTree,insert,1.36,O(n) / O(n log n)
+KDTree,knn10(100 consultas),0.11,O(log n) vs O(n)
+KNN fuerza bruta,knn10(100 consultas),1.02,O(log n) vs O(n)
+BPlusTree,search (por consulta),0.32,O(log_B n) ≈ 0
+BloomFilter,insert+query (vect.),1.09,O(n·k)
+CountMinSketch,update (vect.),0.96,O(n·d)
+MinHash+LSH,consulta,0.05,≈ O(1) + candidatos
+Jaccard fuerza bruta,consulta,1.0,O(nnz)
+IVF,consulta,0.22,O(√n) con nlist ∝ √n
+KNN fuerza bruta (d=32),consulta,0.95,O(n·d)
+PageRank,iteración de potencias,1.08,O(iter·m)
+Louvain,detección,1.3,≈ O(m log n)
+Label Propagation,detección,1.27,≈ O(m)

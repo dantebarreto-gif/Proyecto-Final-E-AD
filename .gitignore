@@ -5,3 +5,4 @@ __pycache__/
 data/
 *.bpt
 .ipynb_checkpoints/
+report/informe.html
