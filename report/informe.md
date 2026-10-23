@@ -16,7 +16,9 @@ Una tienda en línea recibe un flujo continuo de vistas, carritos y compras. Sob
 
 ## 2. Arquitectura del pipeline
 
-{{ARQUITECTURA}}
+<figure><img src="../docs/pipeline.png" alt="Diagrama del pipeline"><figcaption>Figura 1. Flujo por lote. S6 se ejecuta inmediatamente después de S3: solo lo que pasa el filtro llega a S4, S5, S7 y S8, y todas las salidas convergen en S9.</figcaption></figure>
+
+El stream se procesa en lotes de 5.000 eventos. Las etapas incrementales (S0 a S4, S6, S8 y S9) actúan sobre cada evento; las estructuras estáticas o costosas de construir (KD-Tree, firmas MinHash, SVD + IVF, PageRank y Louvain) se **refrescan** cada 2M eventos y al final, como en un sistema lambda con capa rápida y capa por lotes. Cada etapa deja una nota en la traza del evento, lo que permite verificar la integración de forma observable (sección 5).
 
 ## 3. Etapas 0 a 5: estructuras base
 
@@ -57,7 +59,11 @@ Grafo de co-compra no dirigido y ponderado: nodos = productos, peso(u, v) = núm
 
 ## 5. Diseño de la integración
 
-{{INTEGRACION}}
+La integración se verifica con un evento concreto. En la corrida de 10M se trazó automáticamente una compra legítima ubicada al 70 % del stream; esta es su salida literal (abreviada):
+
+<pre>{{TRAZA}}</pre>
+
+Cada flecha de la Figura 1 corresponde a un dato que la etapa siguiente consume: los índices densos de S3 son las filas y columnas de la matriz dispersa y los nodos del grafo; la matriz alimenta las firmas MinHash y la SVD de S7; las aristas de co-compra de S8 y su PageRank ponderan el ranking final de S9, que además usa los vecinos del KD-Tree (S5) y cachea el resultado en el LRU (S3). Las alertas de S6 se ordenan en un heap por severidad (lista negra antes que frecuencia) y la etiqueta de verdad (`is_fraud`, `is_duplicate`) se usa solo para medir, nunca para decidir. Hay 19 pruebas automáticas: cada estructura contra su versión exacta (dict, set, `numpy.searchsorted`, NetworkX para PageRank, fuerza bruta para KNN y Jaccard) y una prueba de integración que exige que el evento trazado pase por las etapas en el orden esperado.
 
 ## 6. Resultados experimentales
 

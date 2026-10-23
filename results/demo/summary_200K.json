@@ -1,0 +1,581 @@
+{
+  "eventos_recibidos": 204220,
+  "eventos_que_pasan_el_filtro": 200124,
+  "segundos": 30.39,
+  "eventos_por_segundo": 6721,
+  "S1": {
+    "invalidos": 0,
+    "duplicados_eliminados": 3018,
+    "duplicados_reales_detectados": 3018
+  },
+  "S2": {
+    "compra express": 1631,
+    "compra premium": 307,
+    "compra estándar": 3260,
+    "compra programada": 725,
+    "carrito": 13101,
+    "vista": 182178
+  },
+  "S3": {
+    "productos": 4000,
+    "usuarios": 8018,
+    "interacciones_nnz": 133575,
+    "productos_nuevos_en_stream": 0
+  },
+  "S4": {
+    "altura_indice_precio": 2,
+    "paginas_precio": 20,
+    "ordenes_indexadas": 5219,
+    "altura_indice_ordenes": 2,
+    "lecturas_disco": 1,
+    "escrituras_disco": 21
+  },
+  "S6": {
+    "blocked": 1078,
+    "precision": 1.0,
+    "recall": 0.8821603927986906,
+    "bloom_positives": 406,
+    "bloom_false_positives": 0,
+    "bloom_memory_bytes": 1798,
+    "cms_memory_bytes": 2174800
+  },
+  "S8": {
+    "nodes_with_edges": 1396,
+    "edges": 4433,
+    "pagerank_iters": 57,
+    "pagerank_s": 0.007893346999935602,
+    "louvain_s": 0.043127607999849715,
+    "louvain_Q": 0.9090501664624827,
+    "louvain_k": 41,
+    "lpa_s": 0.03257178900003055,
+    "lpa_Q": 0.8519312457681957,
+    "lpa_k": 114,
+    "top20_overlap_pagerank_vs_degree": 0.9,
+    "largest_communities": [
+      192,
+      155,
+      149,
+      141,
+      117
+    ]
+  },
+  "tiempos_por_etapa_s": {
+    "setup": 0.077,
+    "S0 ingesta": 3.407,
+    "S1 preprocesamiento": 1.124,
+    "S2 prioridad": 1.007,
+    "S3 almacenamiento": 0.413,
+    "S6 filtrado": 0.983,
+    "S3 interacciones": 0.632,
+    "S4 B+Tree": 0.053,
+    "S5 KD-Tree": 0.004,
+    "S7 similitud": 0.003,
+    "S8 grafo": 0.028,
+    "S9 servicio": 0.104,
+    "S5 refresco KD-Tree": 0.029,
+    "S7 refresco LSH+IVF": 22.3,
+    "S8 refresco PageRank+Louvain": 0.202
+  },
+  "top_ventas": [
+    {
+      "idx": 1131,
+      "product_id": 1007920,
+      "name": "lg refrigerators 9453",
+      "brand": "lg",
+      "category": "appliances.kitchen.refrigerators",
+      "price": 698.6,
+      "views": 6939,
+      "purchases": 197,
+      "ventas": 197
+    },
+    {
+      "idx": 34,
+      "product_id": 1000244,
+      "name": "nordictrack trainer 2841",
+      "brand": "nordictrack",
+      "category": "sport.trainer",
+      "price": 157.82,
+      "views": 6448,
+      "purchases": 182,
+      "ventas": 182
+    },
+    {
+      "idx": 1378,
+      "product_id": 1009648,
+      "name": "playmobil toys 8969",
+      "brand": "playmobil",
+      "category": "kids.toys",
+      "price": 19.39,
+      "views": 3789,
+      "purchases": 102,
+      "ventas": 102
+    },
+    {
+      "idx": 1293,
+      "product_id": 1009054,
+      "name": "apple clocks 3004",
+      "brand": "apple",
+      "category": "electronics.clocks",
+      "price": 67.94,
+      "views": 3423,
+      "purchases": 97,
+      "ventas": 97
+    },
+    {
+      "idx": 1491,
+      "product_id": 1010438,
+      "name": "hoff sofa 8398",
+      "brand": "hoff",
+      "category": "furniture.living_room.sofa",
+      "price": 433.75,
+      "views": 3440,
+      "purchases": 96,
+      "ventas": 96
+    },
+    {
+      "idx": 382,
+      "product_id": 1002676,
+      "name": "nivea care 7929",
+      "brand": "nivea",
+      "category": "beauty.skin.care",
+      "price": 31.3,
+      "views": 3354,
+      "purchases": 94,
+      "ventas": 94
+    },
+    {
+      "idx": 811,
+      "product_id": 1005677,
+      "name": "apple tablet 9794",
+      "brand": "apple",
+      "category": "electronics.tablet",
+      "price": 177.1,
+      "views": 2599,
+      "purchases": 76,
+      "ventas": 76
+    },
+    {
+      "idx": 989,
+      "product_id": 1006923,
+      "name": "versace fragrance 771",
+      "brand": "versace",
+      "category": "beauty.fragrance",
+      "price": 60.29,
+      "views": 2397,
+      "purchases": 76,
+      "ventas": 76
+    },
+    {
+      "idx": 1640,
+      "product_id": 1011483,
+      "name": "zara costume 4596",
+      "brand": "zara",
+      "category": "apparel.costume",
+      "price": 40.21,
+      "views": 2256,
+      "purchases": 76,
+      "ventas": 76
+    },
+    {
+      "idx": 2571,
+      "product_id": 1017999,
+      "name": "wilson tennis 7980",
+      "brand": "wilson",
+      "category": "sport.tennis",
+      "price": 31.94,
+      "views": 2402,
+      "purchases": 67,
+      "ventas": 67
+    }
+  ],
+  "top_pagerank": [
+    {
+      "idx": 1131,
+      "product_id": 1007920,
+      "name": "lg refrigerators 9453",
+      "brand": "lg",
+      "category": "appliances.kitchen.refrigerators",
+      "price": 698.6,
+      "views": 6939,
+      "purchases": 197,
+      "pagerank": 0.013016
+    },
+    {
+      "idx": 1491,
+      "product_id": 1010438,
+      "name": "hoff sofa 8398",
+      "brand": "hoff",
+      "category": "furniture.living_room.sofa",
+      "price": 433.75,
+      "views": 3440,
+      "purchases": 96,
+      "pagerank": 0.009773
+    },
+    {
+      "idx": 34,
+      "product_id": 1000244,
+      "name": "nordictrack trainer 2841",
+      "brand": "nordictrack",
+      "category": "sport.trainer",
+      "price": 157.82,
+      "views": 6448,
+      "purchases": 182,
+      "pagerank": 0.008147
+    },
+    {
+      "idx": 1293,
+      "product_id": 1009054,
+      "name": "apple clocks 3004",
+      "brand": "apple",
+      "category": "electronics.clocks",
+      "price": 67.94,
+      "views": 3423,
+      "purchases": 97,
+      "pagerank": 0.008131
+    },
+    {
+      "idx": 811,
+      "product_id": 1005677,
+      "name": "apple tablet 9794",
+      "brand": "apple",
+      "category": "electronics.tablet",
+      "price": 177.1,
+      "views": 2599,
+      "purchases": 76,
+      "pagerank": 0.007823
+    },
+    {
+      "idx": 3428,
+      "product_id": 1023999,
+      "name": "bosch saw 5721",
+      "brand": "bosch",
+      "category": "construction.tools.saw",
+      "price": 77.0,
+      "views": 1524,
+      "purchases": 50,
+      "pagerank": 0.007609
+    },
+    {
+      "idx": 1378,
+      "product_id": 1009648,
+      "name": "playmobil toys 8969",
+      "brand": "playmobil",
+      "category": "kids.toys",
+      "price": 19.39,
+      "views": 3789,
+      "purchases": 102,
+      "pagerank": 0.006912
+    },
+    {
+      "idx": 1640,
+      "product_id": 1011483,
+      "name": "zara costume 4596",
+      "brand": "zara",
+      "category": "apparel.costume",
+      "price": 40.21,
+      "views": 2256,
+      "purchases": 76,
+      "pagerank": 0.006467
+    },
+    {
+      "idx": 3571,
+      "product_id": 1025001,
+      "name": "a4tech keyboard 3956",
+      "brand": "a4tech",
+      "category": "computers.peripherals.keyboard",
+      "price": 30.09,
+      "views": 714,
+      "purchases": 36,
+      "pagerank": 0.006435
+    },
+    {
+      "idx": 382,
+      "product_id": 1002676,
+      "name": "nivea care 7929",
+      "brand": "nivea",
+      "category": "beauty.skin.care",
+      "price": 31.3,
+      "views": 3354,
+      "purchases": 94,
+      "pagerank": 0.00628
+    }
+  ],
+  "alertas_prioritarias": [
+    {
+      "severidad": 0,
+      "event_id": 35529,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464871.2155699486
+    },
+    {
+      "severidad": 0,
+      "event_id": 35530,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464874.87244736386
+    },
+    {
+      "severidad": 0,
+      "event_id": 35531,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464878.49539909454
+    },
+    {
+      "severidad": 0,
+      "event_id": 35532,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464890.4246477534
+    },
+    {
+      "severidad": 0,
+      "event_id": 35533,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464892.0215307526
+    },
+    {
+      "severidad": 0,
+      "event_id": 35534,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464912.76401607867
+    },
+    {
+      "severidad": 0,
+      "event_id": 35535,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464920.7984438721
+    },
+    {
+      "severidad": 0,
+      "event_id": 35536,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464930.9766565789
+    },
+    {
+      "severidad": 0,
+      "event_id": 35537,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464931.3131511977
+    },
+    {
+      "severidad": 0,
+      "event_id": 35538,
+      "card_id": 6000000000000011,
+      "device_id": 3000000011,
+      "reason": "tarjeta/dispositivo en lista negra",
+      "ts": 464935.25506738655
+    }
+  ],
+  "autocompletado": {
+    "sam": [
+      [
+        "samsung",
+        742.0
+      ],
+      [
+        "samsung smartphone",
+        144.0
+      ],
+      [
+        "samsung tv",
+        99.0
+      ],
+      [
+        "samsung refrigerators",
+        95.0
+      ],
+      [
+        "samsung washer",
+        84.0
+      ]
+    ],
+    "app": [
+      [
+        "apple",
+        853.0
+      ],
+      [
+        "apple clocks",
+        480.0
+      ],
+      [
+        "apple tablet",
+        350.0
+      ],
+      [
+        "apple smartphone",
+        43.0
+      ],
+      [
+        "apple headphone",
+        30.0
+      ]
+    ],
+    "lg ": [
+      [
+        "lg refrigerators",
+        785.0
+      ],
+      [
+        "lg air conditioner",
+        82.0
+      ],
+      [
+        "lg washer",
+        61.0
+      ],
+      [
+        "lg tv",
+        52.0
+      ],
+      [
+        "lg microwave",
+        16.0
+      ]
+    ],
+    "nik": [
+      [
+        "nike",
+        509.0
+      ],
+      [
+        "nike shoes",
+        237.0
+      ],
+      [
+        "nike keds",
+        157.0
+      ],
+      [
+        "nike costume",
+        107.0
+      ],
+      [
+        "nike costume 8698",
+        0.020289332853179784
+      ]
+    ],
+    "tv": [
+      [
+        "tv",
+        225.0
+      ]
+    ]
+  },
+  "rango_precio_100_120": [
+    "sony acoustic 4691",
+    "casio clocks 1876",
+    "makita saw 4965",
+    "samsung microwave 1774",
+    "bose acoustic 5481"
+  ],
+  "traza_evento": {
+    "evento": "Event(id=141677, purchase, product=1004193, user=512000803, price=28.14)",
+    "pasos": [
+      "[S0] encolado (cola=3843)",
+      "[S1] válido, normalizado y no duplicado",
+      "[S2] prioridad 2 (compra estándar), posición 102 de 4906 en el lote",
+      "[S3] producto #599 y usuario #4403 resueltos en la tabla hash",
+      "[S6] pasa el filtro (Bloom: ausente; CMS bajo el umbral)",
+      "[S4] orden indexada por tiempo en el B+Tree",
+      "[S5] vecinos por atributos (KD-Tree): [2592, 1142, 1826]",
+      "[S7] relacionados LSH: [2394, 1010]; vecinos IVF: [178, 3412, 3249]",
+      "[S8] primera compra de la orden: nodo listo para nuevas aristas"
+    ],
+    "producto": {
+      "idx": 599,
+      "product_id": 1004193,
+      "name": "razer keyboard 2233",
+      "brand": "razer",
+      "category": "computers.peripherals.keyboard",
+      "price": 28.14,
+      "views": 37,
+      "purchases": 3
+    },
+    "recomendaciones": [
+      {
+        "idx": 178,
+        "product_id": 1001247,
+        "name": "lenovo notebook 6154",
+        "brand": "lenovo",
+        "category": "computers.notebook",
+        "price": 660.78,
+        "views": 245,
+        "purchases": 7,
+        "puntaje": 1.761,
+        "fuentes": "IVF+grafo"
+      },
+      {
+        "idx": 2557,
+        "product_id": 1017901,
+        "name": "logitech keyboard 4193",
+        "brand": "logitech",
+        "category": "computers.peripherals.keyboard",
+        "price": 55.21,
+        "views": 63,
+        "purchases": 2,
+        "puntaje": 1.121,
+        "fuentes": "IVF"
+      },
+      {
+        "idx": 3571,
+        "product_id": 1025001,
+        "name": "a4tech keyboard 3956",
+        "brand": "a4tech",
+        "category": "computers.peripherals.keyboard",
+        "price": 30.09,
+        "views": 714,
+        "purchases": 36,
+        "puntaje": 1.047,
+        "fuentes": "grafo"
+      },
+      {
+        "idx": 2849,
+        "product_id": 1019943,
+        "name": "a4tech keyboard 3308",
+        "brand": "a4tech",
+        "category": "computers.peripherals.keyboard",
+        "price": 111.27,
+        "views": 9,
+        "purchases": 1,
+        "puntaje": 1.017,
+        "fuentes": "IVF"
+      },
+      {
+        "idx": 2394,
+        "product_id": 1016761,
+        "name": "apple notebook 5814",
+        "brand": "apple",
+        "category": "computers.notebook",
+        "price": 414.36,
+        "views": 8,
+        "purchases": 1,
+        "puntaje": 1.01,
+        "fuentes": "grafo"
+      }
+    ],
+    "recomendaciones_usuario": [
+      "bosch oven 9375",
+      "lg washer 3464",
+      "panasonic microwave 2120",
+      "bosch refrigerators 9003",
+      "samsung washer 5444"
+    ]
+  }
+}

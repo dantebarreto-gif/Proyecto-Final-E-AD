@@ -94,12 +94,18 @@ class MinHashLSH:
         n = signatures.shape[0]
         self._salts = splitmix64_vec(np.arange(1, self.b + 1, dtype=np.uint64))
         keys = self._salted(self._band_hash(signatures)).ravel()  # fila i, banda j -> i*b + j
+        # los conjuntos vacíos (firma = máximo en todas las filas) no se indexan:
+        # todos tendrían la misma firma y serían "similares" entre sí sin serlo
+        empty = np.repeat((signatures == _MAXU).all(axis=1), self.b)
         order = np.argsort(keys, kind="stable")
+        order = order[~empty[order]]
         self._keys = keys[order]
         self._ids = (order // self.b).astype(np.int64)
 
     def candidates(self, sig: np.ndarray) -> np.ndarray:
         """Ids que coinciden con la firma en al menos una banda (búsqueda binaria vectorizada)."""
+        if (sig == _MAXU).all():
+            return np.empty(0, dtype=np.int64)
         q = np.sort(self._salted(self._band_hash(sig[None, :]))[0])
         lo = searchsorted_vec(self._keys, q)
         hi = searchsorted_vec(self._keys, q + np.uint64(1))
