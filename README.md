@@ -25,9 +25,9 @@ Requiere Python 3.10 o superior.
 ```bash
 pip install -r requirements.txt
 
-# 1. Datos: stream sintético con el esquema de REES46 (o el dataset real, ver abajo)
-python scripts/prepare_data.py --events 200000          # ~3 s
-python scripts/prepare_data.py --events 10000000        # ~2 min, 10M eventos
+# 1. Datos: REES46 real (ver abajo cómo descargarlo) o el generador con el mismo esquema
+python scripts/prepare_data.py --source rees46 --events 10000000   # 10M eventos reales
+python scripts/prepare_data.py --events 200000                     # sintético, ~3 s, sin descarga
 
 # 2. Pipeline de punta a punta: imprime el recorrido de un evento por las 10 etapas
 python scripts/run_pipeline.py --data data/synthetic_200000
@@ -51,8 +51,9 @@ node scripts/build_slides.js
 
 ### Usar el dataset real REES46
 
-1. Descargar *eCommerce behavior data from multi category store* de Kaggle en `data/raw/`:
-   `kaggle datasets download -d mkechinov/ecommerce-behavior-data-from-multi-category-store -p data/raw --unzip`
+1. Descargar *eCommerce behavior data from multi category store* de Kaggle (4,6 GB comprimido) y dejar `2019-Oct.csv` en `data/raw/`:
+   `python -c "import kagglehub; print(kagglehub.dataset_download('mkechinov/ecommerce-behavior-data-from-multi-category-store'))"`
+   o `kaggle datasets download -d mkechinov/ecommerce-behavior-data-from-multi-category-store -p data/raw --unzip`
 2. `python scripts/prepare_data.py --source rees46 --events 10000000`
 
 DuckDB lee los CSV en streaming y toma los primeros 10M eventos en orden temporal; el catálogo se deriva de los mismos eventos. Encima se agrega el componente sintético que el dataset no trae (dispositivo, tarjeta, tipo de envío, premium, consultas, duplicados y ráfagas de fraude) con semilla fija, como recomienda el enunciado.
@@ -76,15 +77,16 @@ El orquestador está en [`src/eda/pipeline/`](src/eda/pipeline). S6 corre justo 
 
 ## Resultados principales
 
-Corrida de punta a punta con **10.222.591 eventos** sintéticos con el esquema de REES46 (4 vCPU, Python 3.13), resumen en [`results/demo/summary_10M.json`](results/demo/summary_10M.json):
+Corrida de punta a punta con **10.223.169 eventos reales de REES46** (1 al 8 de octubre de 2019, más el componente de stream) en 4 vCPU con Python 3.13. El resumen está en [`results/demo/summary_10M.json`](results/demo/summary_10M.json) y el log en [`results/demo/run_10M_rees46.log`](results/demo/run_10M_rees46.log):
 
 | Métrica | Valor |
 |---|---|
-| Tiempo total | 1.381 s (7.402 eventos/s) |
-| Duplicados eliminados (S1) | 151.072 de 151.072 inyectados |
-| Fraude (S6) | 64.923 bloqueados, precisión 99,998 %, recall 90,8 %; Bloom de 3,4 KB |
-| B+Tree en disco (S4) | 254.328 órdenes, altura 3 |
-| Grafo de co-compra (S8) | 58.820 productos, 258.638 aristas; Louvain Q = 0,916 frente a LPA Q = 0,894 |
+| Datos | 120.565 productos, 1.072.341 usuarios; 95,6 % de los eventos son vistas |
+| Tiempo total | 1.246 s (8.204 eventos/s); el refresco de S7 es el 55 % |
+| Duplicados eliminados (S1) | 151.081 de 151.081 inyectados |
+| Fraude (S6) | 70.682 bloqueados, precisión 92,9 %, recall 91,1 %; Bloom de 3,4 KB, 7 falsos positivos descartados |
+| B+Tree en disco (S4) | 178.145 órdenes, altura 3 |
+| Grafo de co-compra (S8) | 6.901 productos, 14.035 aristas; Louvain Q = 0,626 frente a LPA Q = 0,394 |
 
 Experimentos de 1K a 10M (detalle y figuras en el informe):
 
@@ -99,7 +101,7 @@ Experimentos de 1K a 10M (detalle y figuras en el informe):
 
 Las pendientes log-log medidas están en [`results/bench/slopes.csv`](results/bench/slopes.csv).
 
-**Sobre los datos.** El entorno donde se ejecutaron las corridas no tenía acceso a Kaggle, por eso se usó el generador con el mismo esquema. Con los CSV de REES46 en `data/raw/` todos los comandos funcionan igual con `--source rees46`.
+**Sobre los datos.** La precisión del filtro baja frente a la corrida sintética (99,998 %) porque en REES46 hay 309 cuentas reales con más de 12 eventos de carrito o compra en 10 minutos (hasta 110); el Count-Min las marca igual que a las ráfagas inyectadas y se reportan como anomalías de bots o revendedores. El grafo es pequeño porque pocas sesiones compran más de un producto. Los experimentos de escalabilidad usan entradas generadas para controlar n y conocer la respuesta exacta. La corrida sintética anterior se conserva en `results/demo/summary_10M_sintetico.json`.
 
 ## Roles y contribución
 

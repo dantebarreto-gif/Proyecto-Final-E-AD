@@ -99,7 +99,7 @@
 \section*{Resumen}
 \addcontentsline{toc}{section}{Resumen}
 
-Se construyó un pipeline de 10 etapas que procesa de punta a punta un stream de \textbf{10\,222\,591 eventos} de una tienda en línea (esquema REES46) a 7\,402 eventos por segundo en Python, con todas las estructuras implementadas desde cero: cola FIFO enlazada, merge sort y búsqueda binaria, heap binario, tabla hash, caché LRU, matriz dispersa, B+Tree en disco, KD-Tree, Bloom Filter, Count-Min Sketch, MinHash + LSH, IVF y HNSW, PageRank, Louvain, Label Propagation y Trie. El filtro de fraude bloquea 64\,923 eventos con precisión de 99{,}998\,\% y recall de 90{,}8\,\% usando 3{,}4\,KB para la lista negra; el B+Tree responde una búsqueda sobre 10M claves en 44\,µs con altura 3; el KD-Tree resuelve KNN 537 veces más rápido que fuerza bruta; LSH responde consultas de similitud 295 veces más rápido que la comparación exhaustiva con recall@10 de 1{,}0 sobre los vecinos relevantes. Los experimentos de 1K a 10M confirman en escala log-log las complejidades teóricas, y un mismo evento queda trazado a través de las 10 etapas.
+Se construyó un pipeline de 10 etapas que procesa de punta a punta \textbf{10\,223\,169 eventos reales} del dataset REES46 (los primeros 10M de octubre de 2019, más el componente de stream sintético que pide el enunciado) a 8\,204 eventos por segundo en Python, con todas las estructuras implementadas desde cero: cola FIFO enlazada, merge sort y búsqueda binaria, heap binario, tabla hash, caché LRU, matriz dispersa, B+Tree en disco, KD-Tree, Bloom Filter, Count-Min Sketch, MinHash + LSH, IVF y HNSW, PageRank, Louvain, Label Propagation y Trie. El filtro de fraude bloquea 70\,682 eventos con precisión de 92{,}9\,\% y recall de 91{,}1\,\% usando 3{,}4\,KB para la lista negra, y sus falsos positivos son cuentas reales con ráfagas de hasta 110 carritos o compras en 10 minutos. El B+Tree responde una búsqueda sobre 10M claves en 44\,µs con altura 3; el KD-Tree resuelve KNN 537 veces más rápido que fuerza bruta; LSH responde consultas de similitud 295 veces más rápido que la comparación exhaustiva con recall@10 de 1{,}0 sobre los vecinos relevantes. Los experimentos de 1K a 10M confirman en escala log-log las complejidades teóricas, y un mismo evento queda trazado a través de las 10 etapas.
 
 \textbf{Repositorio:} \url{\repo}\\
 Contiene el código fuente, este informe (fuente \LaTeX{} en \texttt{report/informe.tex}), el notebook de análisis, el diagrama del pipeline, los CSV de los experimentos, las diapositivas y la tabla de roles del equipo.
@@ -109,7 +109,7 @@ Contiene el código fuente, este informe (fuente \LaTeX{} en \texttt{report/info
 
 Una tienda en línea recibe un flujo continuo de vistas, carritos y compras. Sobre ese flujo hay que priorizar órdenes urgentes, consultar productos con baja latencia, detectar fraude en segundos, recomendar productos relacionados y descubrir qué productos se compran juntos. Cada problema tiene una estructura de datos adecuada; el objetivo del proyecto es encadenarlas de modo que la salida de cada etapa sea la entrada real de la siguiente, y medir cuánto ganan las estructuras aproximadas frente a sus alternativas exactas.
 
-\textbf{Datos.} Se usa el esquema del dataset REES46 \emph{eCommerce behavior data from multi category store} (Kaggle; unos 285M eventos, columnas \texttt{event\_time}, \texttt{event\_type}, \texttt{product\_id}, \texttt{category\_id}, \texttt{category\_code}, \texttt{brand}, \texttt{price}, \texttt{user\_id}, \texttt{user\_session}). El repositorio incluye el cargador del CSV real (DuckDB, lectura en streaming de los primeros $N$ eventos ordenados por tiempo) y un generador con el mismo esquema y semilla fija que reproduce el embudo vista $\to$ carrito $\to$ compra, la popularidad Zipf de productos y sesiones centradas en grupos de categorías afines (lo que crea estructura de co-compra). Como pide el enunciado, el componente de stream es sintético en ambos casos: identificador de evento, dispositivo, IP, tarjeta, usuario premium, tipo de envío (express, estándar, programado), consultas de búsqueda, \textbf{1{,}5\,\% de duplicados} reenviados segundos después y \textbf{ráfagas de fraude} (25 a 120 intentos en menos de 5 minutos desde una tarjeta y un dispositivo). La mitad de las tarjetas fraudulentas se asume ya reportada (lista negra). Las corridas de este informe usan el generador porque el entorno de ejecución no tenía acceso a Kaggle; con los CSV en \texttt{data/raw/} el mismo comando corre sobre los datos reales.
+\textbf{Datos.} Se usa el dataset REES46 \emph{eCommerce behavior data from multi category store} (Kaggle, \texttt{mkechinov/ecommerce-behavior-data-from-multi-category-store}; archivos de octubre y noviembre de 2019 con 110M eventos y columnas \texttt{event\_time}, \texttt{event\_type}, \texttt{product\_id}, \texttt{category\_id}, \texttt{category\_code}, \texttt{brand}, \texttt{price}, \texttt{user\_id}, \texttt{user\_session}). DuckDB lee \texttt{2019-Oct.csv} (5{,}7\,GB) en streaming y toma los \textbf{primeros 10M eventos en orden temporal}, del 1 al 8 de octubre de 2019: 120\,565 productos, 1\,072\,341 usuarios y un embudo muy desbalanceado (95{,}6\,\% vistas, 2{,}2\,\% carritos y 2{,}2\,\% compras). El catálogo se deriva de los mismos eventos y las filas sin sesión se agrupan por usuario. Como pide el enunciado, el componente de stream es sintético y se agrega con semilla fija: identificador de evento, dispositivo, IP, tarjeta, usuario premium, tipo de envío (express, estándar, programado), consultas de búsqueda, \textbf{1{,}5\,\% de duplicados} reenviados segundos después y \textbf{ráfagas de fraude} (25 a 120 intentos en menos de 5 minutos desde una tarjeta y un dispositivo). La mitad de las tarjetas fraudulentas se asume ya reportada (lista negra). El repositorio incluye además un generador con el mismo esquema, que se usa en las pruebas y en los experimentos de escalabilidad, donde el tamaño de la entrada debe controlarse.
 
 % ---------------- 2 ----------------
 \section{Arquitectura del pipeline}
@@ -185,35 +185,35 @@ La integración se verifica con un evento concreto. En la corrida de 10M se traz
 
 \begin{figure}[!htbp]
 \begin{Verbatim}[fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{black!30}]
-Event(id=7050005, purchase, product=1326857, user=512393910, price=132.88)
-  [S0] encolado (cola=545)
+Event(id=6966919, purchase, product=1004856, user=528344847, price=131.76)
+  [S0] encolado (cola=1413)
   [S1] válido, normalizado y no duplicado
-  [S2] prioridad 0 (compra express), posición 3 de 4917 en el lote
-  [S3] producto #46693 y usuario #58009 resueltos en la tabla hash
+  [S2] prioridad 3 (compra programada), posición 133 de 4929 en el lote
+  [S3] producto #861 y usuario #746718 resueltos en la tabla hash
   [S6] pasa el filtro (Bloom: ausente; CMS bajo el umbral)
   [S4] orden indexada por tiempo en el B+Tree
-  [S5] vecinos por atributos (KD-Tree): [108810, 11894, 67409]
-  [S7] relacionados LSH: []; vecinos IVF: [180133, 171512, 125502]
-  [S8] co-compra con [143273, 99174, 32717] en la misma orden
+  [S5] vecinos por atributos (KD-Tree): [786, 840, 14608]
+  [S7] relacionados LSH: []; vecinos IVF: [87190, 87862, 40728]
+  [S8] primera compra de la orden: nodo listo para nuevas aristas
   [S9] recomendaciones Top-5 para su producto:
-       philips iron 2306        puntaje=1.3    fuentes=grafo
-       xiaomi vacuum 2827       puntaje=1.102  fuentes=grafo
-       samsung vacuum 1134      puntaje=1.01   fuentes=grafo
-       samsung vacuum 1737      puntaje=1.0    fuentes=IVF
-       philips iron 6859        puntaje=0.9    fuentes=grafo
+       samsung smartphone 4767   puntaje=1.689  fuentes=grafo+KD-Tree
+       samsung smartphone 4833   puntaje=1.448  fuentes=grafo+KD-Tree
+       samsung smartphone 4750   puntaje=1.024  fuentes=grafo
+       generic unknown 8289      puntaje=1.001  fuentes=IVF
+       samsung smartphone 4836   puntaje=0.954  fuentes=grafo
 \end{Verbatim}
 \caption{Recorrido de un evento por las 10 etapas en la corrida de 10M (salida de \texttt{scripts/run\_pipeline.py}).}
 \label{fig:traza}
 \end{figure}
 
-La compra es express, por eso sale tercera de 4\,917 en el heap de su lote. LSH no devolvió candidatos para este producto porque ninguno supera el umbral de Jaccard ($\approx 0{,}42$) con su conjunto de compradores; la recomendación final se apoya entonces en el grafo de co-compra y en los vecinos IVF, y la fuente de cada producto queda registrada.
+Es la compra de un Samsung de 131{,}76 USD, el producto con mayor PageRank del grafo. Tiene envío programado, así que el heap la deja en la posición 133 de 4\,929, detrás de las compras express, premium y estándar del lote. LSH no devolvió candidatos porque ningún producto supera el umbral de Jaccard ($\approx 0{,}42$) con su conjunto de compradores; la recomendación final combina el grafo de co-compra, el KD-Tree (smartphones de la misma marca y rango de precio) y el IVF, y la fuente de cada producto queda registrada.
 
 Cada flecha de la Figura~\ref{fig:pipeline} corresponde a un dato que la etapa siguiente consume: los índices densos de S3 son las filas y columnas de la matriz dispersa y los nodos del grafo; la matriz alimenta las firmas MinHash y la SVD de S7; las aristas de co-compra de S8 y su PageRank ponderan el ranking final de S9, que además usa los vecinos del KD-Tree (S5) y cachea el resultado en el LRU (S3). Las alertas de S6 se ordenan en un heap por severidad (lista negra antes que frecuencia) y las etiquetas de verdad (\texttt{is\_fraud}, \texttt{is\_duplicate}) se usan solo para medir, nunca para decidir. Hay 19 pruebas automáticas: cada estructura contra su versión exacta (\texttt{dict}, \texttt{set}, \texttt{numpy.searchsorted}, NetworkX para PageRank, fuerza bruta para KNN y Jaccard) y una prueba de integración que exige que el evento trazado pase por las etapas en el orden esperado.
 
 % ---------------- 6 ----------------
 \section{Resultados experimentales}
 
-\textbf{Metodología.} Tamaños de 1K a 10M; 100 repeticiones para 1K y 10K, 10 para 100K, 3 para 1M y 1 para 10M (con 100 repeticiones, la serie de 10M habría tomado días en Python puro). Se reporta la media y la desviación estándar (banda sombreada en las figuras), el pico de memoria con \texttt{tracemalloc} y la pendiente en log-log como exponente empírico. Semilla fija 2026; máquina de 4 vCPU y 16\,GB, Python 3.13 y NumPy 2.5 (\texttt{results/bench/platform.json}). Todos los CSV están en \texttt{results/bench/}.
+\textbf{Metodología.} Tamaños de 1K a 10M; 100 repeticiones para 1K y 10K, 10 para 100K, 3 para 1M y 1 para 10M (con 100 repeticiones, la serie de 10M habría tomado días en Python puro). Se reporta la media y la desviación estándar (banda sombreada en las figuras), el pico de memoria con \texttt{tracemalloc} y la pendiente en log-log como exponente empírico. Semilla fija 2026; máquina de 4 vCPU y 16\,GB, Python 3.13 y NumPy 2.5 (\texttt{results/bench/platform.json}). Todos los CSV están en \texttt{results/bench/}. Estos experimentos usan entradas generadas (claves, conjuntos, vectores y grafos con estructura conocida) para controlar $n$ y tener la respuesta exacta; la corrida del pipeline (sección~\ref{sec:corrida}) usa los datos reales.
 
 \subsection{Estructuras base}
 
@@ -259,7 +259,7 @@ Con 10M elementos el Bloom ($p = 1$\,\%) ocupa \textbf{12\,MB frente a 268\,MB} 
   \caption{Count-Min Sketch frente a la tabla hash exacta: memoria, tiempo de actualización y error frente a la cota $\varepsilon N$.}
 \end{figure}
 
-Con 10M actualizaciones sobre 1M claves, el CMS con $\varepsilon = 0{,}001$ usa \textbf{53\,KB frente a 16{,}8\,MB} y actualiza 4{,}6 veces más rápido. El error medio (642) y el máximo (4\,146) quedan bajo la cota $\varepsilon N = 9\,997$ en el 100\,\% de las claves, sin subestimar nunca; para las claves frecuentes, que son las que disparan alertas, el error relativo es 4\,\%. En el pipeline de 10M el filtro alcanza precisión de \textbf{99{,}998\,\%} y recall de \textbf{90{,}8\,\%}; los 10 falsos positivos del Bloom se descartaron en la verificación exacta. El recall no llega a 100\,\% porque los primeros intentos de cada ráfaga pasan antes de superar el umbral, que es el costo de no bloquear compras legítimas.
+Con 10M actualizaciones sobre 1M claves, el CMS con $\varepsilon = 0{,}001$ usa \textbf{53\,KB frente a 16{,}8\,MB} y actualiza 4{,}6 veces más rápido. El error medio (642) y el máximo (4\,146) quedan bajo la cota $\varepsilon N = 9\,997$ en el 100\,\% de las claves, sin subestimar nunca; para las claves frecuentes, que son las que disparan alertas, el error relativo es 4\,\%. En el pipeline con los 10M eventos reales el filtro bloquea 70\,682 eventos con precisión de \textbf{92{,}9\,\%} y recall de \textbf{91{,}1\,\%}; los 7 falsos positivos del Bloom se descartaron en la verificación exacta. El recall no llega a 100\,\% porque los primeros intentos de cada ráfaga pasan antes de superar el umbral. Los falsos positivos (unos 5\,000 eventos) no son errores del sketch: en los datos reales hay 309 usuarios con más de 12 carritos o compras en una ventana de 10 minutos, hasta 110, un patrón de bot o revendedor que la etiqueta sintética no marca como fraude. Con datos sintéticos, donde ese comportamiento no existe, la precisión fue de 99{,}998\,\% (\texttt{results/demo/summary\_10M\_sintetico.json}). En producción esas alertas irían a revisión manual en lugar de bloquearse.
 
 \subsection{Similitud (S7)}
 
@@ -289,9 +289,9 @@ Con 10M vectores de 32 dimensiones, el IVF (4\,096 celdas, $n_\text{probe} = 8$)
 
 PageRank escala linealmente en aristas (pendiente 1{,}08) y converge en 47 a 56 iteraciones: 20{,}7 s para 9{,}9M aristas. Su correlación de Spearman con el grado ponderado es 0{,}99 y el top-100 coincide en 97\,\%, así que en co-compra la diferencia está en la cola: PageRank sube productos conectados con productos centrales.
 
-En comunidades, sobre grafos con particiones plantadas, Louvain obtiene mayor modularidad que Label Propagation en todos los tamaños (0{,}781 frente a 0{,}750 con 1M aristas, igual a la partición plantada), es más estable entre semillas (NMI 0{,}99 frente a 0{,}94) y recupera mejor la partición real (NMI 0{,}96 frente a 0{,}93), aunque tarda 25 s frente a 19 s. Con 10M aristas solo corrió LPA (448 s), que se fragmentó en 104\,606 comunidades con $Q = 0{,}68$; Louvain en Python puro superó los 40 minutos y se acotó a 1M aristas. En el grafo real de co-compra del pipeline, Louvain logró $Q = 0{,}916$ (1\,239 comunidades) frente a 0{,}894 de LPA (3\,359).
+En comunidades, sobre grafos con particiones plantadas, Louvain obtiene mayor modularidad que Label Propagation en todos los tamaños (0{,}781 frente a 0{,}750 con 1M aristas, igual a la partición plantada), es más estable entre semillas (NMI 0{,}99 frente a 0{,}94) y recupera mejor la partición real (NMI 0{,}96 frente a 0{,}93), aunque tarda 25 s frente a 19 s. Con 10M aristas solo corrió LPA (448 s), que se fragmentó en 104\,606 comunidades con $Q = 0{,}68$; Louvain en Python puro superó los 40 minutos y se acotó a 1M aristas. En el grafo de co-compra de los datos reales, que es pequeño y disperso porque pocas sesiones compran más de un producto (6\,901 productos y 14\,035 aristas), Louvain logró $Q = 0{,}626$ con 1\,005 comunidades frente a $Q = 0{,}394$ de LPA con 1\,608: la diferencia crece cuando la estructura es débil.
 
-\subsection{Pipeline completo con 10M eventos}
+\subsection{Pipeline completo con 10M eventos reales}\label{sec:corrida}
 
 \begin{table}[!htbp]
 \centering\small
@@ -299,22 +299,22 @@ En comunidades, sobre grafos con particiones plantadas, Louvain obtiene mayor mo
 \toprule
 \textbf{Etapa} & \textbf{Tiempo (s)} & \textbf{Etapa} & \textbf{Tiempo (s)}\\
 \midrule
-S0 ingesta (lectura Parquet + cola) & 244 & S4 B+Tree & 4{,}8\\
-S1 preprocesamiento & 64 & S5 KD-Tree (consultas + 5 refrescos) & 4{,}4\\
-S2 prioridad & 78 & S7 refresco LSH + SVD + IVF (5 veces) & 781\\
-S3 almacenamiento e interacciones & 81 & S8 grafo (incremental + 5 refrescos) & 22{,}6\\
-S6 filtrado & 87 & S9 servicio & 5{,}7\\
+S0 ingesta (lectura Parquet + cola) & 259 & S4 B+Tree & 3{,}8\\
+S1 preprocesamiento & 69 & S5 KD-Tree (consultas + 5 refrescos) & 3{,}0\\
+S2 prioridad & 79 & S7 refresco LSH + SVD + IVF (5 veces) & 680\\
+S3 almacenamiento e interacciones & 84 & S8 grafo (incremental + 5 refrescos) & 3{,}7\\
+S6 filtrado & 50 & S9 servicio & 6{,}7\\
 \bottomrule
 \end{tabular}
-\caption{Tiempo por etapa en la corrida completa.}
+\caption{Tiempo por etapa en la corrida con los 10M eventos reales.}
 \end{table}
 
-El total fue de 1\,381 s (7\,402 eventos/s) con 2{,}2\,GB de memoria residente. Se eliminaron los 151\,072 duplicados inyectados sin falsos positivos, se indexaron 254\,328 órdenes en el B+Tree en disco (altura 3) y el grafo de co-compra quedó con 58\,820 productos y 258\,638 aristas. El refresco de S7 concentra el 57\,\% del tiempo (SVD y k-means sobre la matriz de 200K productos); refrescar con menor frecuencia o en paralelo es la mejora más directa. El panel Streamlit (Figura~\ref{fig:panel}) expone la misma traza, las alertas ordenadas por el heap, el Top-K de ventas, el autocompletado con el Trie y las consultas por rango de precio sobre el B+Tree.
+El total fue de 1\,246 s (8\,204 eventos/s) sobre 10\,223\,169 eventos. Se eliminaron los 151\,081 duplicados inyectados sin falsos positivos, se indexaron 178\,145 órdenes en el B+Tree en disco (altura 3) y la matriz usuario $\times$ producto acumuló 5{,}8M celdas no nulas sobre 1{,}07M usuarios y 120\,565 productos. El refresco de S7 concentra el 55\,\% del tiempo (SVD y k-means sobre la matriz completa); refrescar con menor frecuencia o en paralelo es la mejora más directa. Los productos con mayor PageRank son smartphones Samsung y Apple, los más comprados de la semana. El panel Streamlit (Figura~\ref{fig:panel}) expone la misma traza, las alertas ordenadas por el heap, el Top-K de ventas, el autocompletado con el Trie y las consultas por rango de precio sobre el B+Tree.
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.6\linewidth]{../docs/capturas/panel_demo.png}
-  \caption{Panel de la etapa 9 sobre el dataset de 200K eventos.}
+  \caption{Panel de la etapa 9 sobre los primeros 200K eventos reales de REES46.}
   \label{fig:panel}
 \end{figure}
 
@@ -325,14 +325,14 @@ El total fue de 1\,381 s (7\,402 eventos/s) con 2{,}2\,GB de memoria residente. 
   \item \textbf{La integración es real y observable.} Un evento atraviesa las 10 etapas y cada salida es la entrada de la siguiente: los índices de S3 son las filas del grafo y de la matriz, la matriz alimenta MinHash y la SVD, y el grafo, el IVF y el KD-Tree se combinan en la recomendación. Una prueba automática lo verifica en cada cambio.
   \item \textbf{Las estructuras aproximadas ganan con error acotado.} Bloom y Count-Min reducen la memoria 22 y 300 veces con errores que coinciden con la teoría; LSH e IVF responden en milisegundos donde la búsqueda exacta es lineal. Donde un error es costoso (bloquear una compra), un paso exacto lo corrige.
   \item \textbf{Las pendientes confirman la complejidad.} Lineal en la cola y la tabla hash, $n\log n$ en ordenación y heap, casi constante en la búsqueda del B+Tree y en el KNN del KD-Tree en baja dimensión, y lineal en todas las líneas base de fuerza bruta.
-  \item \textbf{Límites.} Python puro limita las repeticiones en 10M y deja fuera Louvain sobre 10M aristas y MinHash sobre 10M conjuntos; el KD-Tree pierde su ventaja en 32 dimensiones; y las corridas usan datos sintéticos con el esquema de REES46 por falta de acceso a Kaggle desde el entorno.
+  \item \textbf{Límites.} Python puro limita las repeticiones en 10M y deja fuera Louvain sobre 10M aristas y MinHash sobre 10M conjuntos; el KD-Tree pierde su ventaja en 32 dimensiones; y en los datos reales el umbral fijo del Count-Min confunde a los usuarios de muy alta frecuencia con fraude.
 \end{enumerate}
 
 \subsection{Trabajos futuros}
 
 \begin{itemize}
-  \item Correr el pipeline sobre el dataset REES46 real.
-  \item Paralelizar el refresco de S7, que concentra el 57\,\% del tiempo.
+  \item Procesar octubre y noviembre completos (110M eventos) y calibrar el umbral del Count-Min por usuario.
+  \item Paralelizar el refresco de S7, que concentra el 55\,\% del tiempo.
   \item Comparar Leiden con Louvain y usar Counting Bloom para poder retirar tarjetas de la lista negra.
 \end{itemize}
 
@@ -345,8 +345,11 @@ El total fue de 1\,381 s (7\,402 eventos/s) con 2{,}2\,GB de memoria residente. 
   \item Reproducción:
 \begin{Verbatim}[fontsize=\footnotesize]
 pip install -r requirements.txt
-python scripts/prepare_data.py --events 10000000
-python scripts/run_pipeline.py --data data/synthetic_10000000
+python -c "import kagglehub; print(kagglehub.dataset_download(\
+  'mkechinov/ecommerce-behavior-data-from-multi-category-store'))"
+# copiar 2019-Oct.csv a data/raw/
+python scripts/prepare_data.py --source rees46 --events 10000000
+python scripts/run_pipeline.py --data data/rees46_10000000
 python bench/run_benchmarks.py && python bench/plots.py
 \end{Verbatim}
 \end{itemize}
