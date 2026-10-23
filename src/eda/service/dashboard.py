@@ -36,7 +36,7 @@ def args():
 def run_pipeline(data_dir: str, limit: int):
     p = StreamPipeline(os.path.join(data_dir, "events.parquet"), os.path.join(data_dir, "catalog.parquet"),
                        workdir=os.path.join(data_dir, "work_dashboard"), batch_size=5_000,
-                       refresh_every=max(50_000, limit // 4))
+                       refresh_every=max(50_000, limit // 4), limit=limit)
     summary = p.run(limit=limit, verbose=False)
     return p, summary
 
@@ -47,8 +47,11 @@ def main() -> None:
     datasets = sorted(glob.glob(os.path.join(ROOT, "data", "*", "events.parquet")))
     default = args().data
     options = [os.path.dirname(d) for d in datasets]
-    if default and os.path.abspath(default) not in options:
-        options.insert(0, os.path.abspath(default))
+    if default:
+        default = os.path.abspath(default)
+        if default in options:
+            options.remove(default)
+        options.insert(0, default)
     tab_live, tab_search, tab_results = st.tabs(["Demo en vivo", "Buscar y recomendar", "Resultados guardados"])
 
     with tab_live:

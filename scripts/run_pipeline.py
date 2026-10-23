@@ -19,7 +19,7 @@ def main() -> None:
     ap.add_argument("--out", default="results/demo/summary.json")
     a = ap.parse_args()
     p = StreamPipeline(os.path.join(a.data, "events.parquet"), os.path.join(a.data, "catalog.parquet"),
-                       workdir=os.path.join(a.data, "work"), batch_size=a.batch, refresh_every=a.refresh)
+                       workdir=os.path.join(a.data, "work"), batch_size=a.batch, refresh_every=a.refresh, limit=a.limit)
     print(f"Evento trazado: {p.trace_event}")
     s = p.run(limit=a.limit)
     p.close()

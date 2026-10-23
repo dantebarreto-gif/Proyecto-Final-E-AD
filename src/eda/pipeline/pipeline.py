@@ -29,7 +29,7 @@ from .stages import (AttributeIndex, DiskIndex, FraudFilter, GraphStage, Ingesti
 class StreamPipeline:
     def __init__(self, events_path: str, catalog_path: str, workdir: str = "data/work",
                  batch_size: int = 5_000, refresh_every: int = 100_000, known_fraud_share: float = 0.5,
-                 trace_event: Optional[int] = None, seed: int = 0) -> None:
+                 trace_event: Optional[int] = None, seed: int = 0, limit: Optional[int] = None) -> None:
         self.events_path = events_path
         self.batch_size = batch_size
         self.refresh_every = refresh_every
@@ -40,7 +40,8 @@ class StreamPipeline:
                                                        "card_id", "device_id"])
         # lista negra "conocida": se asume que una parte de los fraudes se reportó antes
         self.blacklist = blacklist(labels, known_fraud_share, seed)
-        self.trace_event = trace_event if trace_event is not None else self._pick_trace(labels)
+        window = labels if limit is None else labels.iloc[:limit]
+        self.trace_event = trace_event if trace_event is not None else self._pick_trace(window)
         self.store = Store(catalog)
         self.s0 = Ingestion(self._source(), capacity=4 * batch_size)
         self.s1 = Preprocessor()
