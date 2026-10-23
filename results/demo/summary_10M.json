@@ -1,581 +1,597 @@
 {
-  "eventos_recibidos": 10222591,
-  "eventos_que_pasan_el_filtro": 10006596,
-  "segundos": 1380.97,
-  "eventos_por_segundo": 7402,
+  "eventos_recibidos": 10223169,
+  "eventos_que_pasan_el_filtro": 10001406,
+  "segundos": 1246.18,
+  "eventos_por_segundo": 8204,
   "S1": {
     "invalidos": 0,
-    "duplicados_eliminados": 151072,
-    "duplicados_reales_detectados": 151072
+    "duplicados_eliminados": 151081,
+    "duplicados_reales_detectados": 151081
   },
   "S2": {
-    "compra express": 87216,
-    "compra premium": 12243,
-    "compra estándar": 163501,
-    "compra programada": 35101,
-    "carrito": 661897,
-    "vista": 9111561
+    "compra express": 76348,
+    "compra premium": 8654,
+    "compra estándar": 113925,
+    "compra programada": 24516,
+    "carrito": 221149,
+    "vista": 9627496
   },
   "S3": {
-    "productos": 200000,
-    "usuarios": 401260,
-    "interacciones_nnz": 8441002,
+    "productos": 120565,
+    "usuarios": 1072341,
+    "interacciones_nnz": 5808668,
     "productos_nuevos_en_stream": 0
   },
   "S4": {
     "altura_indice_precio": 3,
-    "paginas_precio": 880,
-    "ordenes_indexadas": 254328,
+    "paginas_precio": 532,
+    "ordenes_indexadas": 178145,
     "altura_indice_ordenes": 3,
     "lecturas_disco": 1,
-    "escrituras_disco": 1859
+    "escrituras_disco": 911
   },
   "S6": {
-    "blocked": 64923,
-    "precision": 0.9999845971381482,
-    "recall": 0.9077587773878271,
-    "bloom_positives": 33489,
-    "bloom_false_positives": 10,
+    "blocked": 70682,
+    "precision": 0.9294587023570358,
+    "recall": 0.9113305959382977,
+    "bloom_positives": 34434,
+    "bloom_false_positives": 7,
     "bloom_memory_bytes": 3401,
     "cms_memory_bytes": 2174800
   },
   "S8": {
-    "nodes_with_edges": 58820,
-    "edges": 258638,
-    "pagerank_iters": 74,
-    "pagerank_s": 0.6158103519992437,
-    "louvain_s": 2.1228102329996545,
-    "louvain_Q": 0.9159482131045363,
-    "louvain_k": 1239,
-    "lpa_s": 1.7116495509999368,
-    "lpa_Q": 0.8939445811013635,
-    "lpa_k": 3359,
-    "top20_overlap_pagerank_vs_degree": 0.95,
+    "nodes_with_edges": 6901,
+    "edges": 14035,
+    "pagerank_iters": 89,
+    "pagerank_s": 0.1255206410005485,
+    "louvain_s": 0.16115500900014013,
+    "louvain_Q": 0.6257845916508422,
+    "louvain_k": 1005,
+    "lpa_s": 0.1751183319993288,
+    "lpa_Q": 0.39381996594527424,
+    "lpa_k": 1608,
+    "top20_overlap_pagerank_vs_degree": 0.9,
     "largest_communities": [
-      5913,
-      5897,
-      5478,
-      5448,
-      5424
+      642,
+      559,
+      525,
+      453,
+      265
     ]
   },
   "tiempos_por_etapa_s": {
-    "setup": 4.329,
-    "S0 ingesta": 244.45,
-    "S1 preprocesamiento": 63.709,
-    "S2 prioridad": 78.127,
-    "S3 almacenamiento": 28.091,
-    "S6 filtrado": 86.849,
-    "S3 interacciones": 53.135,
-    "S4 B+Tree": 4.763,
-    "S5 KD-Tree": 0.384,
-    "S7 similitud": 0.199,
-    "S8 grafo": 1.86,
-    "S9 servicio": 5.701,
-    "S5 refresco KD-Tree": 4.04,
-    "S7 refresco LSH+IVF": 781.098,
-    "S8 refresco PageRank+Louvain": 20.766
+    "setup": 2.754,
+    "S0 ingesta": 258.545,
+    "S1 preprocesamiento": 69.493,
+    "S2 prioridad": 78.597,
+    "S3 almacenamiento": 37.972,
+    "S6 filtrado": 50.259,
+    "S3 interacciones": 45.88,
+    "S4 B+Tree": 3.8,
+    "S5 KD-Tree": 0.432,
+    "S7 similitud": 0.216,
+    "S8 grafo": 1.495,
+    "S9 servicio": 6.685,
+    "S5 refresco KD-Tree": 2.598,
+    "S7 refresco LSH+IVF": 680.059,
+    "S8 refresco PageRank+Louvain": 2.217
   },
   "top_ventas": [
     {
-      "idx": 143273,
-      "product_id": 2002911,
-      "name": "philips iron 2306",
-      "brand": "philips",
-      "category": "appliances.iron",
-      "price": 53.02,
-      "views": 270955,
-      "purchases": 7658,
-      "ventas": 7658
+      "idx": 861,
+      "product_id": 1004856,
+      "name": "samsung smartphone 4856",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 131.76,
+      "views": 99972,
+      "purchases": 6760,
+      "ventas": 6760
     },
     {
-      "idx": 10504,
-      "product_id": 1073528,
-      "name": "dior fragrance 9499",
-      "brand": "dior",
-      "category": "beauty.fragrance",
-      "price": 43.74,
-      "views": 254714,
-      "purchases": 6953,
-      "ventas": 6953
+      "idx": 786,
+      "product_id": 1004767,
+      "name": "samsung smartphone 4767",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 252.63,
+      "views": 82294,
+      "purchases": 4872,
+      "ventas": 4872
     },
     {
-      "idx": 142205,
-      "product_id": 1995441,
-      "name": "kenwood player 3857",
-      "brand": "kenwood",
-      "category": "auto.accessories.player",
-      "price": 147.45,
-      "views": 194873,
-      "purchases": 5484,
-      "ventas": 5484
+      "idx": 1059,
+      "product_id": 1005115,
+      "name": "apple smartphone 5115",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 975.56,
+      "views": 92963,
+      "purchases": 3055,
+      "ventas": 3055
     },
     {
-      "idx": 32666,
-      "product_id": 1228666,
-      "name": "hoff sofa 6971",
-      "brand": "hoff",
-      "category": "furniture.living_room.sofa",
-      "price": 552.82,
-      "views": 88977,
-      "purchases": 2468,
-      "ventas": 2468
+      "idx": 14608,
+      "product_id": 4804056,
+      "name": "apple headphone 4056",
+      "brand": "apple",
+      "category": "electronics.audio.headphone",
+      "price": 161.84,
+      "views": 41759,
+      "purchases": 3034,
+      "ventas": 3034
     },
     {
-      "idx": 135433,
-      "product_id": 1948036,
-      "name": "asus notebook 6723",
-      "brand": "asus",
-      "category": "computers.notebook",
-      "price": 854.34,
-      "views": 68594,
-      "purchases": 1980,
-      "ventas": 1980
+      "idx": 840,
+      "product_id": 1004833,
+      "name": "samsung smartphone 4833",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 173.98,
+      "views": 42043,
+      "purchases": 2788,
+      "ventas": 2788
     },
     {
-      "idx": 161422,
-      "product_id": 2129960,
-      "name": "hugo fragrance 2273",
-      "brand": "hugo",
-      "category": "beauty.fragrance",
-      "price": 59.67,
-      "views": 65815,
-      "purchases": 1870,
-      "ventas": 1870
+      "idx": 871,
+      "product_id": 1004870,
+      "name": "samsung smartphone 4870",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 289.51,
+      "views": 48045,
+      "purchases": 2614,
+      "ventas": 2614
     },
     {
-      "idx": 18240,
-      "product_id": 1127683,
-      "name": "ikea sofa 7372",
-      "brand": "ikea",
-      "category": "furniture.living_room.sofa",
-      "price": 916.18,
-      "views": 62073,
-      "purchases": 1752,
-      "ventas": 1752
+      "idx": 32,
+      "product_id": 1002544,
+      "name": "apple smartphone 2544",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 462.39,
+      "views": 43407,
+      "purchases": 2438,
+      "ventas": 2438
     },
     {
-      "idx": 193470,
-      "product_id": 2354290,
-      "name": "philips iron 6946",
-      "brand": "philips",
-      "category": "appliances.iron",
-      "price": 55.09,
-      "views": 63567,
-      "purchases": 1656,
-      "ventas": 1656
+      "idx": 493,
+      "product_id": 1004249,
+      "name": "apple smartphone 4249",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 730.53,
+      "views": 52947,
+      "purchases": 2084,
+      "ventas": 2084
     },
     {
-      "idx": 61185,
-      "product_id": 1428300,
-      "name": "nike keds 5593",
-      "brand": "nike",
-      "category": "apparel.shoes.keds",
-      "price": 68.7,
-      "views": 51831,
-      "purchases": 1459,
-      "ventas": 1459
+      "idx": 15892,
+      "product_id": 5100816,
+      "name": "xiaomi unknown 816",
+      "brand": "xiaomi",
+      "category": "unknown",
+      "price": 28.78,
+      "views": 43583,
+      "purchases": 1855,
+      "ventas": 1855
     },
     {
-      "idx": 99846,
-      "product_id": 1698924,
-      "name": "sony subwoofer 1412",
-      "brand": "sony",
-      "category": "electronics.audio.subwoofer",
-      "price": 415.57,
-      "views": 47904,
-      "purchases": 1319,
-      "ventas": 1319
+      "idx": 18,
+      "product_id": 1002524,
+      "name": "apple smartphone 2524",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 512.21,
+      "views": 31738,
+      "purchases": 1722,
+      "ventas": 1722
     }
   ],
   "top_pagerank": [
     {
-      "idx": 143273,
-      "product_id": 2002911,
-      "name": "philips iron 2306",
-      "brand": "philips",
-      "category": "appliances.iron",
-      "price": 53.02,
-      "views": 270955,
-      "purchases": 7658,
-      "pagerank": 0.007545
+      "idx": 861,
+      "product_id": 1004856,
+      "name": "samsung smartphone 4856",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 131.76,
+      "views": 99972,
+      "purchases": 6760,
+      "pagerank": 0.004133
     },
     {
-      "idx": 10504,
-      "product_id": 1073528,
-      "name": "dior fragrance 9499",
-      "brand": "dior",
-      "category": "beauty.fragrance",
-      "price": 43.74,
-      "views": 254714,
-      "purchases": 6953,
-      "pagerank": 0.006662
+      "idx": 786,
+      "product_id": 1004767,
+      "name": "samsung smartphone 4767",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 252.63,
+      "views": 82294,
+      "purchases": 4872,
+      "pagerank": 0.003214
     },
     {
-      "idx": 135433,
-      "product_id": 1948036,
-      "name": "asus notebook 6723",
-      "brand": "asus",
-      "category": "computers.notebook",
-      "price": 854.34,
-      "views": 68594,
-      "purchases": 1980,
-      "pagerank": 0.004948
+      "idx": 840,
+      "product_id": 1004833,
+      "name": "samsung smartphone 4833",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 173.98,
+      "views": 42043,
+      "purchases": 2788,
+      "pagerank": 0.002054
     },
     {
-      "idx": 32666,
-      "product_id": 1228666,
-      "name": "hoff sofa 6971",
-      "brand": "hoff",
-      "category": "furniture.living_room.sofa",
-      "price": 552.82,
-      "views": 88977,
-      "purchases": 2468,
-      "pagerank": 0.004878
+      "idx": 1059,
+      "product_id": 1005115,
+      "name": "apple smartphone 5115",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 975.56,
+      "views": 92963,
+      "purchases": 3055,
+      "pagerank": 0.002006
     },
     {
-      "idx": 142205,
-      "product_id": 1995441,
-      "name": "kenwood player 3857",
-      "brand": "kenwood",
-      "category": "auto.accessories.player",
-      "price": 147.45,
-      "views": 194873,
-      "purchases": 5484,
-      "pagerank": 0.004113
+      "idx": 32,
+      "product_id": 1002544,
+      "name": "apple smartphone 2544",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 462.39,
+      "views": 43407,
+      "purchases": 2438,
+      "pagerank": 0.00186
     },
     {
-      "idx": 18240,
-      "product_id": 1127683,
-      "name": "ikea sofa 7372",
-      "brand": "ikea",
-      "category": "furniture.living_room.sofa",
-      "price": 916.18,
-      "views": 62073,
-      "purchases": 1752,
-      "pagerank": 0.003791
+      "idx": 871,
+      "product_id": 1004870,
+      "name": "samsung smartphone 4870",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 289.51,
+      "views": 48045,
+      "purchases": 2614,
+      "pagerank": 0.001551
     },
     {
-      "idx": 61185,
-      "product_id": 1428300,
-      "name": "nike keds 5593",
-      "brand": "nike",
-      "category": "apparel.shoes.keds",
-      "price": 68.7,
-      "views": 51831,
-      "purchases": 1459,
-      "pagerank": 0.003521
+      "idx": 18,
+      "product_id": 1002524,
+      "name": "apple smartphone 2524",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 512.21,
+      "views": 31738,
+      "purchases": 1722,
+      "pagerank": 0.001355
     },
     {
-      "idx": 161422,
-      "product_id": 2129960,
-      "name": "hugo fragrance 2273",
-      "brand": "hugo",
-      "category": "beauty.fragrance",
-      "price": 59.67,
-      "views": 65815,
-      "purchases": 1870,
-      "pagerank": 0.003085
+      "idx": 843,
+      "product_id": 1004836,
+      "name": "samsung smartphone 4836",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 230.61,
+      "views": 34513,
+      "purchases": 1674,
+      "pagerank": 0.001271
     },
     {
-      "idx": 193470,
-      "product_id": 2354290,
-      "name": "philips iron 6946",
-      "brand": "philips",
-      "category": "appliances.iron",
-      "price": 55.09,
-      "views": 63567,
-      "purchases": 1656,
-      "pagerank": 0.002991
+      "idx": 874,
+      "product_id": 1004873,
+      "name": "samsung smartphone 4873",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 380.67,
+      "views": 33627,
+      "purchases": 1436,
+      "pagerank": 0.001202
     },
     {
-      "idx": 99846,
-      "product_id": 1698924,
-      "name": "sony subwoofer 1412",
-      "brand": "sony",
-      "category": "electronics.audio.subwoofer",
-      "price": 415.57,
-      "views": 47904,
-      "purchases": 1319,
-      "pagerank": 0.002921
+      "idx": 493,
+      "product_id": 1004249,
+      "name": "apple smartphone 4249",
+      "brand": "apple",
+      "category": "electronics.smartphone",
+      "price": 730.53,
+      "views": 52947,
+      "purchases": 2084,
+      "pagerank": 0.001172
     }
   ],
   "alertas_prioritarias": [
     {
       "severidad": 0,
-      "event_id": 102904,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 145,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27712.313116090958
+      "ts": 121.58276082623853
     },
     {
       "severidad": 0,
-      "event_id": 102920,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 162,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27716.198918570983
+      "ts": 133.98890749655104
     },
     {
       "severidad": 0,
-      "event_id": 102952,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 187,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27724.03937063091
+      "ts": 148.576145523874
     },
     {
       "severidad": 0,
-      "event_id": 102953,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 194,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27724.75850753724
+      "ts": 154.8518944671412
     },
     {
       "severidad": 0,
-      "event_id": 102968,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 198,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27729.103808695418
+      "ts": 159.01208687034932
     },
     {
       "severidad": 0,
-      "event_id": 102977,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 206,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27731.029328564964
+      "ts": 167.01486846052416
     },
     {
       "severidad": 0,
-      "event_id": 103022,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 207,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27743.28583089877
+      "ts": 167.6132675933303
     },
     {
       "severidad": 0,
-      "event_id": 103028,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 220,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27744.5691883464
+      "ts": 175.09920645014415
     },
     {
       "severidad": 0,
-      "event_id": 103060,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 243,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27751.205004937812
+      "ts": 197.97858035510978
     },
     {
       "severidad": 0,
-      "event_id": 103102,
-      "card_id": 6000000000000826,
-      "device_id": 3000000826,
+      "event_id": 249,
+      "card_id": 6000000000000699,
+      "device_id": 3000000699,
       "reason": "tarjeta/dispositivo en lista negra",
-      "ts": 27761.267798298166
+      "ts": 202.84588925096475
     }
   ],
   "autocompletado": {
     "sam": [
       [
         "samsung",
-        46511.0
+        116037.0
       ],
       [
         "samsung smartphone",
-        7507.0
-      ],
-      [
-        "samsung washer",
-        6679.0
+        80538.0
       ],
       [
         "samsung tv",
-        6553.0
+        7278.0
       ],
       [
-        "samsung microwave",
-        5336.0
+        "samsung washer",
+        5720.0
+      ],
+      [
+        "samsung vacuum",
+        4512.0
       ]
     ],
     "app": [
       [
         "apple",
-        23460.0
-      ],
-      [
-        "apple tablet",
-        7624.0
-      ],
-      [
-        "apple clocks",
-        6871.0
-      ],
-      [
-        "apple headphone",
-        4383.0
+        96207.0
       ],
       [
         "apple smartphone",
-        3373.0
+        76493.0
+      ],
+      [
+        "apple headphone",
+        8334.0
+      ],
+      [
+        "apple clocks",
+        5416.0
+      ],
+      [
+        "apple notebook",
+        2074.0
       ]
     ],
     "lg ": [
       [
         "lg washer",
-        9567.0
-      ],
-      [
-        "lg refrigerators",
-        7345.0
-      ],
-      [
-        "lg air conditioner",
-        3010.0
+        4190.0
       ],
       [
         "lg tv",
-        2667.0
+        2777.0
+      ],
+      [
+        "lg refrigerators",
+        1990.0
+      ],
+      [
+        "lg vacuum",
+        825.0
       ],
       [
         "lg microwave",
-        1488.0
+        546.0
       ]
     ],
     "nik": [
       [
         "nike",
-        35245.0
+        1870.0
       ],
       [
         "nike keds",
-        15542.0
+        1384.0
       ],
       [
-        "nike shoes",
-        13543.0
+        "nikon",
+        1248.0
       ],
       [
-        "nike costume",
-        6329.0
+        "nika",
+        855.0
       ],
       [
-        "nike keds 5593",
-        0.17357044808584318
+        "nika ironing board",
+        512.0
       ]
     ],
     "tv": [
       [
         "tv",
-        13463.0
+        21684.0
+      ],
+      [
+        "tv-shop",
+        11.0
+      ],
+      [
+        "tvs",
+        7.0
+      ],
+      [
+        "tv-shop unknown 16",
+        0.0006246412533342337
+      ],
+      [
+        "tvs unknown 1941",
+        0.00031232062666711684
       ]
     ]
   },
   "rango_precio_100_120": [
-    "jbl acoustic 5416",
-    "pioneer player 5355",
-    "versace fragrance 613",
-    "jbl acoustic 1449",
-    "tefal iron 485"
+    "pirelli unknown 9581",
+    "forward unknown 7963",
+    "sokolov unknown 2009",
+    "focal subwoofer 600",
+    "ryobi vacuum 84"
   ],
   "traza_evento": {
-    "evento": "Event(id=7050005, purchase, product=1326857, user=512393910, price=132.88)",
+    "evento": "Event(id=6966919, purchase, product=1004856, user=528344847, price=131.76)",
     "pasos": [
-      "[S0] encolado (cola=545)",
+      "[S0] encolado (cola=1413)",
       "[S1] válido, normalizado y no duplicado",
-      "[S2] prioridad 0 (compra express), posición 3 de 4917 en el lote",
-      "[S3] producto #46693 y usuario #58009 resueltos en la tabla hash",
+      "[S2] prioridad 3 (compra programada), posición 133 de 4929 en el lote",
+      "[S3] producto #861 y usuario #746718 resueltos en la tabla hash",
       "[S6] pasa el filtro (Bloom: ausente; CMS bajo el umbral)",
       "[S4] orden indexada por tiempo en el B+Tree",
-      "[S5] vecinos por atributos (KD-Tree): [108810, 11894, 67409]",
-      "[S7] relacionados LSH: []; vecinos IVF: [180133, 171512, 125502]",
-      "[S8] co-compra con [143273, 99174, 32717] en la misma orden"
+      "[S5] vecinos por atributos (KD-Tree): [786, 840, 14608]",
+      "[S7] relacionados LSH: []; vecinos IVF: [87190, 87862, 40728]",
+      "[S8] primera compra de la orden: nodo listo para nuevas aristas"
     ],
     "producto": {
-      "idx": 46693,
-      "product_id": 1326857,
-      "name": "philips vacuum 4958",
-      "brand": "philips",
-      "category": "appliances.environment.vacuum",
-      "price": 132.88,
-      "views": 8,
-      "purchases": 1
+      "idx": 861,
+      "product_id": 1004856,
+      "name": "samsung smartphone 4856",
+      "brand": "samsung",
+      "category": "electronics.smartphone",
+      "price": 131.76,
+      "views": 99972,
+      "purchases": 6760
     },
     "recomendaciones": [
       {
-        "idx": 143273,
-        "product_id": 2002911,
-        "name": "philips iron 2306",
-        "brand": "philips",
-        "category": "appliances.iron",
-        "price": 53.02,
-        "views": 270955,
-        "purchases": 7658,
-        "puntaje": 1.3,
-        "fuentes": "grafo"
-      },
-      {
-        "idx": 32717,
-        "product_id": 1229022,
-        "name": "xiaomi vacuum 2827",
-        "brand": "xiaomi",
-        "category": "appliances.environment.vacuum",
-        "price": 144.98,
-        "views": 402,
-        "purchases": 12,
-        "puntaje": 1.102,
-        "fuentes": "grafo"
-      },
-      {
-        "idx": 62814,
-        "product_id": 1439700,
-        "name": "samsung vacuum 1134",
+        "idx": 786,
+        "product_id": 1004767,
+        "name": "samsung smartphone 4767",
         "brand": "samsung",
-        "category": "appliances.environment.vacuum",
-        "price": 220.43,
-        "views": 2626,
-        "purchases": 75,
-        "puntaje": 1.01,
+        "category": "electronics.smartphone",
+        "price": 252.63,
+        "views": 82294,
+        "purchases": 4872,
+        "puntaje": 1.689,
+        "fuentes": "grafo+KD-Tree"
+      },
+      {
+        "idx": 840,
+        "product_id": 1004833,
+        "name": "samsung smartphone 4833",
+        "brand": "samsung",
+        "category": "electronics.smartphone",
+        "price": 173.98,
+        "views": 42043,
+        "purchases": 2788,
+        "puntaje": 1.448,
+        "fuentes": "grafo+KD-Tree"
+      },
+      {
+        "idx": 776,
+        "product_id": 1004750,
+        "name": "samsung smartphone 4750",
+        "brand": "samsung",
+        "category": "electronics.smartphone",
+        "price": 197.77,
+        "views": 28199,
+        "purchases": 1246,
+        "puntaje": 1.024,
         "fuentes": "grafo"
       },
       {
-        "idx": 157414,
-        "product_id": 2101898,
-        "name": "samsung vacuum 1737",
-        "brand": "samsung",
-        "category": "appliances.environment.vacuum",
-        "price": 112.24,
-        "views": 5,
+        "idx": 87190,
+        "product_id": 26018289,
+        "name": "generic unknown 8289",
+        "brand": "generic",
+        "category": "unknown",
+        "price": 6.56,
+        "views": 1,
         "purchases": 0,
-        "puntaje": 1.0,
+        "puntaje": 1.001,
         "fuentes": "IVF"
       },
       {
-        "idx": 99174,
-        "product_id": 1694224,
-        "name": "philips iron 6859",
-        "brand": "philips",
-        "category": "appliances.iron",
-        "price": 73.83,
-        "views": 80,
-        "purchases": 1,
-        "puntaje": 0.9,
+        "idx": 843,
+        "product_id": 1004836,
+        "name": "samsung smartphone 4836",
+        "brand": "samsung",
+        "category": "electronics.smartphone",
+        "price": 230.61,
+        "views": 34513,
+        "purchases": 1674,
+        "puntaje": 0.954,
         "fuentes": "grafo"
       }
     ],
     "recomendaciones_usuario": [
-      "braun iron 9962",
-      "midea air conditioner 2863",
-      "bosch vacuum 5904",
-      "tefal iron 8714",
-      "braun iron 1345"
+      "generic unknown 8289",
+      "generic unknown 2290",
+      "worth unknown 306",
+      "makita unknown 92",
+      "makita unknown 90"
     ]
   }
 }

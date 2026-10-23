@@ -208,19 +208,19 @@ async function main() {
 
   // 3. Datos
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Introducción" });
-  s.addText("Datos: el esquema de REES46 más el componente de stream", { placeholder: "title" });
-  statBlock(s, 0.6, 1.5, 3.8, fmt(S.eventos_recibidos), "eventos procesados en la corrida completa", C.accent1);
+  s.addText("Datos: 10M eventos reales de REES46 más el componente de stream", { placeholder: "title" });
+  statBlock(s, 0.6, 1.5, 3.8, fmt(S.eventos_recibidos), "eventos reales del 1 al 8 de octubre de 2019", C.accent1);
   statBlock(s, 4.7, 1.5, 3.8, fmt(S.S3.productos), `productos y ${fmt(S.S3.usuarios)} usuarios`, C.accent3);
   statBlock(s, 8.8, 1.5, 3.9, fmt(S.S1.duplicados_eliminados), "duplicados inyectados (1,5 %), todos eliminados", C.accent2);
   s.addText([
-    { text: "Base REES46 (Kaggle): ", options: { bold: true, color: C.text1 } },
-    { text: "event_time, event_type, product_id, category_code, brand, price, user_id, user_session. Embudo vista → carrito → compra, popularidad Zipf y sesiones por categorías afines.", options: { color: C.text2, breakLine: true } },
+    { text: "REES46 (Kaggle): ", options: { bold: true, color: C.text1 } },
+    { text: "DuckDB lee 2019-Oct.csv (5,7 GB) en streaming y toma los primeros 10M eventos en orden temporal: event_time, event_type, product_id, category_code, brand, price, user_id, user_session. El 95,6 % son vistas.", options: { color: C.text2, breakLine: true } },
     { text: "Componente sintético con semilla fija: ", options: { bold: true, color: C.text1 } },
     { text: "dispositivo, IP, tarjeta, usuario premium, tipo de envío, consultas, duplicados reenviados y ráfagas de fraude de 25 a 120 intentos en menos de 5 minutos.", options: { color: C.text2, breakLine: true } },
-    { text: "Nota: ", options: { bold: true, color: C.text1 } },
-    { text: "el entorno de ejecución no tenía acceso a Kaggle, por eso las corridas usan el generador con el mismo esquema. Con los CSV en data/raw/ el mismo comando corre sobre el dataset real.", options: { color: C.text2 } },
+    { text: "Experimentos de escalabilidad: ", options: { bold: true, color: C.text1 } },
+    { text: "usan entradas generadas para controlar n y conocer la respuesta exacta; el pipeline completo corre sobre los datos reales.", options: { color: C.text2 } },
   ], { x: 0.6, y: 3.3, w: 12.1, h: 3.4, fontSize: 18, margin: 0, isTextBox: true, valign: "top", paraSpaceAfter: 16 });
-  s.addNotes("Presenta: Dante. Usamos el esquema de REES46. Encima agregamos lo que el dataset no trae y que el enunciado pide simular: dispositivo, tarjeta, tipo de envío, duplicados y ráfagas de fraude. Las etiquetas de fraude y duplicado solo se usan para medir precisión y recall, nunca para decidir.");
+  s.addNotes("Presenta: Dante. Usamos los primeros 10 millones de eventos reales de REES46, del 1 al 8 de octubre de 2019. Encima agregamos lo que el dataset no trae y que el enunciado pide simular: dispositivo, tarjeta, tipo de envío, duplicados y ráfagas de fraude. Las etiquetas de fraude y duplicado solo se usan para medir precisión y recall, nunca para decidir.");
 
   // 4. Arquitectura
   pres.addSection({ title: "Arquitectura" });
@@ -275,7 +275,7 @@ async function main() {
     { text: "Count-Min Sketch: ", options: { bold: true, color: C.text1 } },
     { text: "intentos por tarjeta y por dispositivo en una ventana de 10 minutos (anillo de 10 sub-sketches). Alerta con más de 12 o 20 intentos.", options: { color: C.text2 } },
   ], { x: 1.45, y: 1.5, w: 5.6, h: 2.6, fontSize: 15, margin: 0, isTextBox: true, valign: "top", paraSpaceAfter: 12 });
-  statBlock(s, 0.6, 4.3, 3.1, pct(S.S6.precision, 3), "precisión del filtro", C.accent2);
+  statBlock(s, 0.6, 4.3, 3.1, pct(S.S6.precision, 1), "precisión: lo demás son cuentas reales con ráfagas de compra", C.accent2);
   statBlock(s, 3.9, 4.3, 3.1, pct(S.S6.recall, 1), "recall: las primeras compras de cada ráfaga pasan", C.accent2);
   statBlock(s, 0.6, 5.65, 3.1, `${fmt(S.S6.bloom_memory_bytes / 1024, 1)} KB`, "memoria del Bloom", C.text1);
   statBlock(s, 3.9, 5.65, 3.1, fmt(S.S6.bloom_false_positives), "falsos positivos, descartados por la verificación", C.text1);
@@ -295,7 +295,7 @@ async function main() {
       catAxisLabelFontSize: 11, valAxisLabelFontSize: 10, valGridLine: { color: "E4E3DF", size: 0.5 },
       catGridLine: { style: "none" }, ...chartText });
   }
-  s.addNotes("Presenta: Clinton. El Bloom guarda la lista negra en pocos kilobytes y no tiene falsos negativos. Como un falso positivo bloquearía una compra legítima, cada positivo se verifica contra el conjunto exacto. El Count-Min cuenta intentos por tarjeta en una ventana deslizante de 10 minutos; nunca subestima, así que no oculta una ráfaga. El recall es 91 % porque los primeros intentos de cada ráfaga pasan antes de llegar al umbral.");
+  s.addNotes("Presenta: Clinton. El Bloom guarda la lista negra en pocos kilobytes y no tiene falsos negativos. Como un falso positivo bloquearía una compra legítima, cada positivo se verifica contra el conjunto exacto. El Count-Min cuenta intentos por tarjeta en una ventana deslizante de 10 minutos; nunca subestima, así que no oculta una ráfaga. El recall es 91 % porque los primeros intentos de cada ráfaga pasan antes de llegar al umbral. La precisión es 93 % porque en los datos reales hay unas 300 cuentas con hasta 110 carritos o compras en 10 minutos: parecen bots o revendedores, y en producción irían a revisión manual. Con datos sintéticos la precisión fue 99,998 %.");
 
   // 8. S7
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Etapas" });
@@ -345,7 +345,7 @@ async function main() {
     statBlock(s, 0.6, 5.5, 3.1, `${fmt(prBig.pagerank_s ?? prBig.time_s, 1)} s`, `PageRank con ${fmt(prBig.edges / 1e6, 1)}M aristas`, C.text1);
     statBlock(s, 3.9, 5.5, 3.1, fmt(prBig.spearman_vs_degree, 2), "correlación de Spearman con el grado", C.text1);
   }
-  const comRows = [["Pipeline 10M", S.S8.louvain_Q, S.S8.lpa_Q]];
+  const comRows = [["REES46 real (10M eventos)", S.S8.louvain_Q, S.S8.lpa_Q]];
   if (louBig.edges) comRows.push([`Grafo plantado ${fmt(louBig.edges / 1e6, 1)}M aristas`, louBig.modularity, lpaSame.modularity]);
   s.addChart(pres.charts.BAR, [
     { name: "Louvain", labels: comRows.map((r) => r[0]), values: comRows.map((r) => +(+r[1]).toFixed(3)) },
@@ -356,7 +356,7 @@ async function main() {
     valAxisMinVal: 0, valAxisMaxVal: 1, showLegend: true, legendPos: "b", legendFontSize: 11,
     catAxisLabelColor: HEX.dk2, valAxisLabelColor: HEX.dk2, catAxisLabelFontSize: 11, valAxisLabelFontSize: 10,
     valGridLine: { color: "E4E3DF", size: 0.5 }, catGridLine: { style: "none" }, ...chartText });
-  s.addNotes("Presenta: Clinton. El grafo une productos que aparecen en la misma orden. PageRank converge en menos de un segundo sobre el grafo de la corrida completa. En comunidades, Louvain obtiene mayor modularidad y es más estable entre semillas que Label Propagation, a cambio de más tiempo.");
+  s.addNotes("Presenta: Clinton. El grafo une productos que aparecen en la misma orden. PageRank converge en menos de un segundo. En los datos reales el grafo es disperso porque pocas sesiones compran más de un producto, y ahí la ventaja de Louvain sobre Label Propagation crece. En comunidades, Louvain obtiene mayor modularidad y es más estable entre semillas que Label Propagation, a cambio de más tiempo.");
 
   // 10. Escalabilidad
   pres.addSection({ title: "Resultados" });
@@ -390,7 +390,7 @@ async function main() {
 
   // 12. Corrida de 10M
   s = pres.addSlide({ masterName: "CONTENIDO", sectionTitle: "Resultados" });
-  s.addText(`La corrida completa: ${fmt(S.eventos_recibidos / 1e6, 1)}M eventos en ${fmt(S.segundos / 60, 0)} minutos`, { placeholder: "title" });
+  s.addText(`La corrida completa: ${fmt(S.eventos_recibidos / 1e6, 1)}M eventos reales en ${fmt(S.segundos / 60, 0)} minutos`, { placeholder: "title" });
   const st = Object.entries(S.tiempos_por_etapa_s).filter(([k]) => k !== "setup").sort((a, b) => a[1] - b[1]);
   s.addChart(pres.charts.BAR, [{ name: "segundos", labels: st.map((x) => x[0]), values: st.map((x) => +x[1].toFixed(1)) }], {
     x: 0.6, y: 1.45, w: 7.4, h: 5.3, barDir: "bar", barGapWidthPct: 40, chartColors: [HEX.accent1],
@@ -401,9 +401,9 @@ async function main() {
   statBlock(s, 8.4, 1.5, 4.3, `${fmt(S.eventos_por_segundo)} ev/s`, "de punta a punta en Python, 1 proceso", C.accent1);
   statBlock(s, 8.4, 2.95, 4.3, fmt(S.S4.ordenes_indexadas), `órdenes en el B+Tree en disco, altura ${S.S4.altura_indice_ordenes}`, C.text1);
   statBlock(s, 8.4, 4.4, 4.3, fmt(S.S6.blocked), "eventos de fraude bloqueados antes de llegar a S4", C.text1);
-  s.addText("El refresco de S7 (SVD + k-means sobre 200K productos) domina el tiempo: es el primer candidato a paralelizar.",
+  s.addText("El refresco de S7 (SVD + k-means sobre la matriz usuario × producto) domina el tiempo: es el primer candidato a paralelizar.",
     { x: 8.4, y: 5.85, w: 4.3, h: 0.9, fontSize: 12.5, italic: true, color: C.text2, margin: 0, isTextBox: true, valign: "top" });
-  s.addNotes("Presenta: Ronald. Corrimos los 10 millones de eventos de punta a punta. El gráfico muestra dónde se va el tiempo: la ingesta y el refresco de similitud son lo más caro; las estructuras de consulta como el B+Tree o el KD-Tree cuestan segundos. Esto nos dice qué optimizar primero.");
+  s.addNotes("Presenta: Ronald. Corrimos los 10 millones de eventos reales de punta a punta. El gráfico muestra dónde se va el tiempo: la ingesta y el refresco de similitud son lo más caro; las estructuras de consulta como el B+Tree o el KD-Tree cuestan segundos. Esto nos dice qué optimizar primero.");
 
   // 13. Conclusiones
   pres.addSection({ title: "Cierre" });
@@ -413,7 +413,7 @@ async function main() {
     ["La integración funciona", "Un mismo evento atraviesa las 10 etapas y cada salida es la entrada de la siguiente, comprobado con una prueba automática."],
     ["Lo aproximado paga", "Bloom y Count-Min detectan fraude con kilobytes; LSH e IVF responden órdenes de magnitud más rápido con recall alto."],
     ["Las pendientes confirman la teoría", "Lineal donde se espera O(n), casi plano en B+Tree y KD-Tree, lineal en fuerza bruta."],
-    ["Siguiente paso", "Correr sobre REES46 real, paralelizar el refresco de S7 y probar Leiden frente a Louvain."],
+    ["Siguiente paso", "Procesar octubre y noviembre completos (110M eventos), calibrar el umbral por usuario y paralelizar S7."],
   ];
   concl.forEach(([h, d], i) => {
     const x = 0.6 + (i % 2) * 6.15, y = 1.6 + Math.floor(i / 2) * 2.55;
@@ -425,7 +425,7 @@ async function main() {
   });
   s.addText("github.com/dantebarreto-gif/Proyecto-Final-E-AD", { x: 0.6, y: 6.8, w: 8, h: 0.4, fontSize: 12,
     color: C.accent6, margin: 0, isTextBox: true });
-  s.addNotes("Presenta: Clinton. Cerramos con cuatro ideas: la integración es observable de punta a punta, las estructuras probabilísticas ganan en memoria y tiempo con error controlado, las mediciones confirman la complejidad teórica, y el siguiente paso es correr sobre el dataset real y paralelizar el refresco de similitud. Gracias, quedamos atentos a sus preguntas.");
+  s.addNotes("Presenta: Clinton. Cerramos con cuatro ideas: la integración es observable de punta a punta, las estructuras probabilísticas ganan en memoria y tiempo con error controlado, las mediciones confirman la complejidad teórica, y el siguiente paso es procesar los dos meses completos y paralelizar el refresco de similitud. Gracias, quedamos atentos a sus preguntas.");
 
   await pres.writeFile({ fileName: OUT });
   // escribe los colores del tema en el .pptx (opcional: módulo apply_theme.js de la skill pptx)
