@@ -11,7 +11,9 @@ LSH por bandas: la firma se corta en b bandas de r filas; dos conjuntos son
 candidatos si coinciden en al menos una banda. P[candidato] = 1 - (1 - J^r)^b,
 una curva en S con umbral aproximado (1/b)^(1/r). Con b=32, r=4 el umbral
 es ~0.42. Cada banda se indexa como un arreglo ordenado de (hash de banda, id)
-y se consulta con la búsqueda binaria propia (etapa 1).
+y se consulta con la búsqueda binaria propia (etapa 1): las b bandas
+comparten un único arreglo ordenado de claves (hash de banda mezclado con el
+número de banda), así una consulta son 2 búsquedas binarias vectorizadas.
 """
 from __future__ import annotations
 
@@ -36,8 +38,8 @@ class MinHashLSH:
         rng = np.random.default_rng(seed)
         self.seeds = rng.integers(1, 2 ** 63, size=num_perm, dtype=np.uint64)
         self.signatures: Optional[np.ndarray] = None
-        self._band_keys: List[np.ndarray] = []
-        self._band_ids: List[np.ndarray] = []
+        self._keys = np.empty(0, dtype=np.uint64)
+        self._ids = np.empty(0, dtype=np.int64)
 
     @property
     def threshold(self) -> float:
@@ -82,28 +84,26 @@ class MinHashLSH:
                 acc = splitmix64_vec(acc ^ s[:, :, j])
         return acc
 
+    def _salted(self, bh: np.ndarray) -> np.ndarray:
+        """Hash de banda combinado con el número de banda: una sola tabla para las b bandas."""
+        return splitmix64_vec(bh ^ self._salts[None, :])
+
     def index(self, signatures: np.ndarray) -> None:
+        """Indexa todas las bandas en un único arreglo ordenado de (clave, id): O(n·b log(n·b))."""
         self.signatures = signatures
-        bh = self._band_hash(signatures)
-        self._band_keys, self._band_ids = [], []
-        for band in range(self.b):
-            order = np.argsort(bh[:, band], kind="stable")
-            self._band_keys.append(bh[order, band])
-            self._band_ids.append(order.astype(np.int64))
+        n = signatures.shape[0]
+        self._salts = splitmix64_vec(np.arange(1, self.b + 1, dtype=np.uint64))
+        keys = self._salted(self._band_hash(signatures)).ravel()  # fila i, banda j -> i*b + j
+        order = np.argsort(keys, kind="stable")
+        self._keys = keys[order]
+        self._ids = (order // self.b).astype(np.int64)
 
     def candidates(self, sig: np.ndarray) -> np.ndarray:
-        bh = self._band_hash(sig[None, :])[0]
-        found = []
-        for band in range(self.b):
-            keys = self._band_keys[band]
-            q = bh[band:band + 1]
-            lo = searchsorted_vec(keys, q)[0]
-            hi = lo
-            n = keys.shape[0]
-            while hi < n and keys[hi] == q[0]:
-                hi += 1
-            if hi > lo:
-                found.append(self._band_ids[band][lo:hi])
+        """Ids que coinciden con la firma en al menos una banda (búsqueda binaria vectorizada)."""
+        q = np.sort(self._salted(self._band_hash(sig[None, :]))[0])
+        lo = searchsorted_vec(self._keys, q)
+        hi = searchsorted_vec(self._keys, q + np.uint64(1))
+        found = [self._ids[a:b] for a, b in zip(lo.tolist(), hi.tolist()) if b > a]
         if not found:
             return np.empty(0, dtype=np.int64)
         return np.unique(np.concatenate(found))
@@ -123,7 +123,7 @@ class MinHashLSH:
 
     def memory_bytes(self) -> int:
         sig = self.signatures.nbytes if self.signatures is not None else 0
-        return sig + sum(a.nbytes for a in self._band_keys) + sum(a.nbytes for a in self._band_ids)
+        return sig + self._keys.nbytes + self._ids.nbytes
 
 
 def jaccard_brute_force(indptr: np.ndarray, indices: np.ndarray, query_set: np.ndarray, k: int = 10,
