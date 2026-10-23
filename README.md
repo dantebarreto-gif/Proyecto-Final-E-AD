@@ -11,7 +11,7 @@ Pipeline de 10 etapas que procesa un stream de eventos de una tienda en línea (
 | Entregable | Dónde |
 |---|---|
 | Código fuente de las estructuras y el pipeline | [`src/eda/`](src/eda) |
-| Informe PDF (8 a 12 páginas) | [`report/Proyecto_Final_GrupoEDA.pdf`](report/Proyecto_Final_GrupoEDA.pdf), fuente en [`report/informe.md`](report/informe.md) |
+| Informe PDF (8 a 12 páginas) | [`report/Proyecto_Final_Grupo2.pdf`](report/Proyecto_Final_Grupo2.pdf), fuente LaTeX en [`report/informe.tex`](report/informe.tex) |
 | Diapositivas | [`report/Presentacion_Final.pptx`](report/Presentacion_Final.pptx) |
 | Notebook de análisis | [`notebooks/analisis_resultados.ipynb`](notebooks/analisis_resultados.ipynb) |
 | Diagrama del pipeline | [`docs/pipeline.svg`](docs/pipeline.svg) |
@@ -41,8 +41,8 @@ python bench/run_benchmarks.py --quick     # 1K a 100K, minutos
 python bench/run_benchmarks.py             # 1K a 10M, horas en Python puro
 python bench/plots.py                      # figuras log-log en report/figures/
 
-# 5. Informe PDF (Markdown -> HTML -> PDF con Chrome/Chromium)
-python scripts/build_report.py --group GrupoEDA
+# 5. Informe PDF (LaTeX, requiere pdflatex)
+python scripts/build_report.py --group Grupo2
 
 # 6. Diapositivas (Node.js): lee las cifras de results/
 npm install pptxgenjs react react-dom react-icons sharp

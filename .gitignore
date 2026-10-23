@@ -6,3 +6,7 @@ data/
 *.bpt
 .ipynb_checkpoints/
 report/informe.html
+report/informe.aux
+report/informe.log
+report/informe.out
+report/informe.toc
